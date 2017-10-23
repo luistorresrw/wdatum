@@ -1,0 +1,64 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+ 		<meta charset="utf-8">
+ 		<title>W-Datum</title>
+ 		
+ 		
+ 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ 		<link href="{% static 'materialize/css/materialize.css' %}" rel="stylesheet" >
+
+ 		<script type="text/javascript" src="{% static 'jquery/jquery_v321.js' %}"></script>
+		<script type="text/javascript" src="{% static 'materialize/js/materialize.js' %}"></script>
+      
+      	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+
+ 	</head>
+ 	<body>
+ 		<div class="navbar-fixed">
+ 			<ul id="dropdown1" class="dropdown-content">
+				<li><a href="{% url 'crear_nacionalidad' %}">Nacionalidad</a></li>
+				<li class="divider"></li>
+				<li><a href="{% url 'crear_nivel_instruccion' %}">Nivel de Instrucción</a></li>
+				<li class="divider"></li>
+				<li><a href="#!">three</a></li>
+			</ul>
+	 		<nav>
+			    <div class="nav-wrapper  light-green">
+			    	<div class="container">
+			    		<img src="{% static 'img/logo_agro.png' %}" style="max-width: 55px; max-height: 55px">
+			    		<a href="#" class="brand-logo"> W-datum</a>
+			    		<ul id="nav-mobile" class="right hide-on-med-and-down">
+				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administración<i class="material-icons right">arrow_drop_down</i></a></li>
+			    		</ul>
+			    	</div>	
+			    </div>
+			    </div>
+			</nav>
+ 		</div>
+ 			{% block content %}
+
+ 			{% endblock %}
+ 			
+
+ 	<!--
+        <footer class="page-footer  light-green">
+          <div class="footer-copyright">
+            <div class="container">
+            © 2017 powered by VTN Software 
+            </div>
+          </div>
+        </footer>
+    -->        
+
+  		
+ 	</body>
+</html>
+
+
+
