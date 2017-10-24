@@ -11,4 +11,8 @@ urlpatterns = [
     url(r'^crear_nivel_instruccion/$', views.crear_nivel_instruccion, name='crear_nivel_instruccion'),
     url(r'^(?P<id>\d+)/editar_nivel_instruccion$',views.editar_nivel_instruccion, name='editar_nivel_instruccion'),
     url(r'^(?P<id>\d+)/borrar_nivel_instruccion$',views.borrar_nivel_instruccion, name='borrar_nivel_instruccion'),
+
+    url(r'^crear_regimen_tenencia/$', views.crear_regimen_tenencia, name='crear_regimen_tenencia'),
+    url(r'^(?P<id>\d+)/editar_regimen_tenencia$', views.editar_regimen_tenencia, name='editar_regimen_tenencia'),
+    url(r'^(?P<id>\d+)/borrar_regimen_tenencia$', views.borrar_regimen_tenencia, name='borrar_regimen_tenencia'),
 ]

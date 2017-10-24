@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+
 class Nacionalidad(models.Model):
 	descripcion = models.CharField(max_length=50)
 
@@ -16,6 +17,7 @@ class NivelInstruccion(models.Model):
 
 	def __unicode__(self):
 		return self.descripcion
+
 
 class RegimenTenencia(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -37,6 +39,7 @@ class MaterialEstructura(models.Model):
 	def __unicode__(self):
 		return self.descripcion
 
+
 class TipoProduccion(models.Model):
 	descripcion = models.CharField(max_length=50)
 
@@ -50,11 +53,13 @@ class EleccionCultivo(models.Model):
 	def __unicode__(self):
 		return self.descripcion
 
+
 class TipoCultivo(models.Model):
 	descripcion = models.CharField(max_length=50)
 
 	def __unicode__(self):
 		return self.descripcion
+
 
 class Especie(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -70,7 +75,6 @@ class FactorClimatico(models.Model):
 		return self.descripcion
 
 
-
 class TripleLavado(models.Model):
 	descripcion = models.CharField(max_length=50)
 
@@ -84,7 +88,7 @@ class Asesoramiento(models.Model):
 	def __unicode__(self):
 		return self.descripcion
 
-#---------------------------------------------------------		
+#---------------------------------------------------------
 
 class Establecimiento(models.Model):
 	nombre = models.CharField(max_length=45)
