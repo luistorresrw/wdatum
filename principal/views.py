@@ -2,8 +2,8 @@
 
 from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404, redirect
-from principal.forms import NacionalidadForm, NivelInstruccionForm, RegimenTenenciaForm
-from .models import Nacionalidad, NivelInstruccion, RegimenTenencia
+from principal.forms import NacionalidadForm, NivelInstruccionForm, RegimenTenenciaForm, AnioConstruccionForm
+from .models import Nacionalidad, NivelInstruccion, RegimenTenencia, AnioConstruccion
 
 
 def index(request):
@@ -134,4 +134,43 @@ def borrar_regimen_tenencia(request, id):
     regimen_tenencia = get_object_or_404(RegimenTenencia, id=id)
     regimen_tenencia.delete()
     return redirect('crear_regimen_tenencia')
+
+
+# ------------Año de construcción----------------------
+
+
+def crear_anio_construccion(request):
+    lista = AnioConstruccion.objects.all()
+    if request.method == 'POST':
+        form = AnioConstruccionForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = RegimenTenenciaForm()
+
+    context = {'lista': lista, 'form': form }
+    return render(request, 'crear_anio_construccion.html', context)
+
+
+def editar_anio_construccion(request, id):
+    form = AnioConstruccionForm()
+    anio_construccion = get_object_or_404(AnioConstruccion, id=id)
+    lista = AnioConstruccion.objects.all()
+
+    if request.method == 'POST':
+        form = AnioConstruccionForm(request.POST, instance=anio_construccion)
+        if form.is_valid():
+            anio_construccion= form.save(commit=False)
+            anio_construccion.save()
+            return redirect('crear_anio_construccion')
+        else:
+            form = AnioConstruccionForm(instance=anio_construccion)
+    context = {'lista': lista,'form': form,}
+    return render(request,'./editar_anio_construccion.html', context)
+
+
+def borrar_anio_construccion(request, id):
+    anio_construccion = get_object_or_404(AnioConstruccion, id=id)
+    anio_construccion.delete()
+    return redirect('crear_anio_construccion')
 

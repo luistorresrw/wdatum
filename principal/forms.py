@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Nacionalidad, NivelInstruccion, RegimenTenencia
+from .models import Nacionalidad, NivelInstruccion, RegimenTenencia, AnioConstruccion
 
 
 class NacionalidadForm(forms.ModelForm):
@@ -21,4 +21,7 @@ class RegimenTenenciaForm(forms.ModelForm):
 		fields = ('descripcion',)
 
 
-
+class AnioConstruccionForm(forms.ModelForm):
+	class Meta:
+		model = AnioConstruccion
+		fields = ('descripcion',)

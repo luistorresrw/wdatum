@@ -90,6 +90,7 @@ class Asesoramiento(models.Model):
 
 #---------------------------------------------------------
 
+
 class Establecimiento(models.Model):
 	nombre = models.CharField(max_length=45)
 	numero = models.CharField(max_length=45)

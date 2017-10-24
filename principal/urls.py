@@ -15,4 +15,8 @@ urlpatterns = [
     url(r'^crear_regimen_tenencia/$', views.crear_regimen_tenencia, name='crear_regimen_tenencia'),
     url(r'^(?P<id>\d+)/editar_regimen_tenencia$', views.editar_regimen_tenencia, name='editar_regimen_tenencia'),
     url(r'^(?P<id>\d+)/borrar_regimen_tenencia$', views.borrar_regimen_tenencia, name='borrar_regimen_tenencia'),
+
+    url(r'^crear_anio_construccion/$', views.crear_anio_construccion, name='crear_anio_construccion'),
+    url(r'^(?P<id>\d+)/editar_anio_construccion$', views.editar_anio_construccion, name='editar_anio_construccion'),
+    url(r'^(?P<id>\d+)/borrar_anio_construccion$', views.borrar_anio_construccion, name='borrar_anio_construccion'),
 ]
