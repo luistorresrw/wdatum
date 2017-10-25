@@ -2,8 +2,8 @@
 
 from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404, redirect
-from principal.forms import NacionalidadForm, NivelInstruccionForm, RegimenTenenciaForm, AnioConstruccionForm
-from .models import Nacionalidad, NivelInstruccion, RegimenTenencia, AnioConstruccion
+from principal.forms import NacionalidadForm, NivelInstruccionForm, RegimenTenenciaForm, AnioConstruccionForm, MaterialEstructuraForm, TipoProduccionForm
+from .models import Nacionalidad, NivelInstruccion, RegimenTenencia, AnioConstruccion, MaterialEstructura, TipoProduccion
 
 
 def index(request):
@@ -174,3 +174,78 @@ def borrar_anio_construccion(request, id):
     anio_construccion.delete()
     return redirect('crear_anio_construccion')
 
+
+# -----------Material Estructura-----------------------
+
+def crear_material_estructura(request):
+    lista = MaterialEstructura.objects.all()
+    if request.method == 'POST':
+        form = MaterialEstructuraForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = MaterialEstructuraForm()
+
+    context = {'lista': lista, 'form': form}
+    return render(request, 'crear_material_estructura.html', context)
+
+
+def editar_material_estructura(request, id):
+    form = MaterialEstructuraForm()
+    material_estructura = get_object_or_404(MaterialEstructura, id=id)
+    lista = MaterialEstructura.objects.all()
+
+    if request.method == 'POST':
+        form = MaterialEstructuraForm(request.POST, instance=material_estructura)
+        if form.is_valid():
+            material_estructura = form.save(commit=False)
+            material_estructura.save()
+            return redirect('crear_material_estructura')
+        else:
+            form = MaterialEstructuraForm(instance=material_estructura)
+    context = {'lista': lista, 'form':form}
+    return render(request, './editar_material_estructura.html', context)
+
+
+def borrar_material_estructura(request, id):
+    material_estructura = get_object_or_404(MaterialEstructura, id=id)
+    material_estructura.delete()
+    return redirect('crear_material_estructura')
+
+
+# -----------Tipo de Producción -----------------------
+
+def crear_tipo_produccion(request):
+    lista = TipoProduccion.objects.all()
+    if request.method == 'POST':
+        form = TipoProduccionForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = TipoProduccionForm()
+
+    context = {'lista': lista, 'form': form}
+    return render(request, 'crear_tipo_produccion.html', context)
+
+
+def editar_tipo_produccion(request, id):
+    form = TipoProduccionForm()
+    tipo_produccion = get_object_or_404(TipoProduccion, id=id)
+    lista = TipoProduccion.objects.all()
+
+    if request.method == 'POST':
+        form = TipoProduccionForm(request.POST, instance=tipo_produccion)
+        if form.is_valid():
+            tipo_produccion = form.save(commit=False)
+            tipo_produccion.save()
+            return redirect('crear_tipo_produccion')
+        else:
+            form = TipoProduccionForm(instance=tipo_produccion)
+    context = {'lista': lista, 'form':form}
+    return render(request, './editar_tipo_produccion.html', context)
+
+
+def borrar_tipo_produccion(request, id):
+    tipo_produccion = get_object_or_404(TipoProduccion, id=id)
+    tipo_produccion.delete()
+    return redirect('crear_tipo_produccion')
