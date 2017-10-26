@@ -33,12 +33,22 @@
 				<li><a href="{% url 'crear_material_estructura' %}">Material de la Estructura</a></li>
                 <li class="divider"></li>
 				<li><a href="{% url 'crear_tipo_produccion' %}">Tipo de Producción</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_eleccion_cultivo' %}">Eleccion de Cultivo</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_tipo_cultivo' %}">Tipo de Cultivo</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_especie' %}">Especie</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_factor_climatico' %}">Factor Climático</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_triple_lavado' %}">Triple Lavado</a></li>
 			</ul>
 	 		<nav>
 			    <div class="nav-wrapper  light-green">
 			    	<div class="container">
 			    		<img src="{% static 'img/logo_agro.png' %}" style="max-width: 55px; max-height: 55px">
-			    		<a href="#" class="brand-logo"> W-datum</a>
+			    		<a href="{% url 'principal_index' %}" class="brand-logo"> W-datum</a>
 			    		<ul id="nav-mobile" class="right hide-on-med-and-down">
 				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administración<i class="material-icons right">arrow_drop_down</i></a></li>
 			    		</ul>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+	<div class="col s12">
+		<h3>Editar Especie</h3>
+			<div class="row">
+				<div class="col s12">
+					<form action="" method="POST">{% csrf_token %}
+						<div class="input-field col s6">
+							{{form.as_p}}	
+	    			</form>
+	    			    	<button class="btn waves-effect light-green" type="submit" >Actualizar
+					    		<i class="material-icons right">edit</i>
+					  		</button>
+					  		<a href="{% url 'crear_especie' %}"> Cancelar<i class="material-icons">back</i></a>
+	  					</div>	
+					</form>
+      			</div>
+    		</div>
+    	
+    	{% if lista %}
+    	<table class="highlight bordered responsive-table">
+	        <thead>
+	          	<tr>
+	              	<th>Id</th>
+	              	<th>Descripción</th>
+	              	<th>Acciones</th>
+	          	</tr>
+	        </thead>
+	        <tbody>
+     			{% for elemento in lista %}     
+		          	<tr>
+		            	<td>{{elemento.id}}</td>
+		            	<td>{{elemento.descripcion}}</td>
+		            	<td>
+		            		<a class="disabled" href="" ><i class="material-icons">edit</i> 
+		                	<a href="{% url 'borrar_especie' elemento.id %}"> <i class="material-icons">delete</i></a>
+		            	</td>
+		          	</tr>
+          		{% endfor %}
+        	</tbody>
+      	</table>
+      	{% endif %}
+    </div>
+</div>
+{% endblock %}
