@@ -443,3 +443,42 @@ def borrar_triple_lavado(request, id):
     triple_lavado= get_object_or_404(TripleLavado, id=id)
     triple_lavado.delete()
     return redirect('crear_triple_lavado')
+
+
+# ----------------Asesoramiento-----------------------
+
+
+def crear_asesoramiento(request):
+    lista = Asesoramiento.objects.all()
+    if request.method == 'POST':
+        form = AsesoramientoForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AsesoramientoForm()
+
+    context = {'lista': lista, 'form': form}
+    return render(request, 'crear_asesoramiento.html', context)
+
+
+def editar_asesoramiento(request, id):
+    form = AsesoramientoForm()
+    asesoramiento = get_object_or_404(Asesoramiento, id=id)
+    lista = Asesoramiento.objects.all()
+
+    if request.method == 'POST':
+        form = AsesoramientoForm(request.POST, instance=asesoramiento)
+        if form.is_valid():
+            asesoramiento = form.save(commit=False)
+            asesoramiento.save()
+            return redirect('crear_asesoramiento')
+        else:
+            form = AsesoramientoForm(instance=asesoramiento)
+    context = {'lista': lista, 'form': form}
+    return render(request, './editar_asesoramiento.html', context)
+
+
+def borrar_asesoramiento(request, id):
+    asesoramiento = get_object_or_404(Asesoramiento, id=id)
+    asesoramiento.delete()
+    return redirect('crear_asesoramiento')

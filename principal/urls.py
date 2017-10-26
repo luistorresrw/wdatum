@@ -47,4 +47,8 @@ urlpatterns = [
     url(r'^crear_triple_lavado/$', views.crear_triple_lavado, name='crear_triple_lavado'),
     url(r'^(?P<id>\d+)/editar_triple_lavado$', views.editar_triple_lavado, name='editar_triple_lavado'),
     url(r'^(?P<id>\d+)/borrar_triple_lavado$', views.borrar_triple_lavado, name='borrar_triple_lavado'),
+
+    url(r'^crear_asesoramiento/$', views.crear_asesoramiento, name='crear_asesoramiento'),
+    url(r'^(?P<id>\d+)/editar_asesoramiento$', views.editar_asesoramiento, name='editar_asesoramiento'),
+    url(r'^(?P<id>\d+)/borrar_asesoramiento$', views.borrar_asesoramiento, name='borrar_asesoramiento'),
 ]

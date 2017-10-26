@@ -88,7 +88,7 @@ class Asesoramiento(models.Model):
 	def __unicode__(self):
 		return self.descripcion
 
-#---------------------------------------------------------
+# ---------------------------------------------------------
 
 
 class Establecimiento(models.Model):
