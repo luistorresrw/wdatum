@@ -1,17 +1,19 @@
 #-*-coding: utf-8 -*-
-
 from __future__ import unicode_literals
+
+import json
+from django.http import HttpResponse
+from django.core import serializers
+
 from django.shortcuts import render, get_object_or_404, redirect
 from principal.forms import NacionalidadForm, NivelInstruccionForm
-from .models import Nacionalidad, NivelInstruccion
+from .models import Nacionalidad, NivelInstruccion, Establecimiento
+
 
 def index(request):
-
-	mensaje = "index.html"
-
+	lista = Establecimiento.objects.all()
 	context = {
-		'mensaje':mensaje
-
+		'lista':lista,
 	}
 	return render(request, 'index.html', context)
 

@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from geoposition.fields import GeopositionField
+
 class Nacionalidad(models.Model):
 	descripcion = models.CharField(max_length=50)
 
@@ -89,8 +91,8 @@ class Asesoramiento(models.Model):
 class Establecimiento(models.Model):
 	nombre = models.CharField(max_length=45)
 	numero = models.CharField(max_length=45)
-	posLatitud = models.CharField(max_length=45)
-	posLongitud = models.CharField(max_length=45)
+	posLatitud = models.FloatField()
+	posLongitud = models.FloatField()
 
 	def __unicode__(self):
 		return self.nombre

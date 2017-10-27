@@ -8,14 +8,23 @@
  		
  		
  		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
  		<link href="{% static 'materialize/css/materialize.css' %}" rel="stylesheet" >
+ 		<link href="{% static 'styles.css' %}" rel="stylesheet" >
+
 
  		<script type="text/javascript" src="{% static 'jquery/jquery_v321.js' %}"></script>
 		<script type="text/javascript" src="{% static 'materialize/js/materialize.js' %}"></script>
+		<script type="text/javascript" src="{% static 'scripts.js' %}"></script>
       
+
+
       	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-
+      	 
+      	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkKy8gqIij-B-wdd3tFe2kLIA1zRlCtQo&callback=initMap"></script>
 
 
  	</head>
@@ -32,7 +41,7 @@
 			    <div class="nav-wrapper  light-green">
 			    	<div class="container">
 			    		<img src="{% static 'img/logo_agro.png' %}" style="max-width: 55px; max-height: 55px">
-			    		<a href="#" class="brand-logo"> W-datum</a>
+			    		<a href="{% url 'principal_index' %}" class="brand-logo"> W-datum</a>
 			    		<ul id="nav-mobile" class="right hide-on-med-and-down">
 				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administración<i class="material-icons right">arrow_drop_down</i></a></li>
 			    		</ul>
