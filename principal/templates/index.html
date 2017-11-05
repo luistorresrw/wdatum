@@ -1,62 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-	<script type="text/javascript">
-	
-	
-
-	function initMap() {
-
-	    var map = new google.maps.Map(document.getElementById('map'), {
-	    	zoom: 6,
-	        center: {lat: -43.980198, lng: -68.275580 },
-	        mapTypeId: google.maps.MapTypeId.SATELLITE,  
-	    });
-
-	        // Create an array of alphabetical characters used to label the markers.
-	    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-	        // Add some markers to the map.
-	        // Note: The code uses the JavaScript Array.prototype.map() method to
-	        // create an array of markers based on a given "locations" array.
-	        // The map() method here has nothing to do with the Google Maps API.
-	    var markers = locations.map(function(location, i) {
-	    	return new google.maps.Marker({
-	        	position: location,
-	            label: labels[i % labels.length]
-	        });
-	    });
-
-	        // Add a marker clusterer to manage the markers.
-	    var markerCluster = new MarkerClusterer(map, markers,
-	        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-	    }
-	      
-	      	
-	    var locations = [
-	        {% for elemento in lista %}
-				{ lat:{{elemento.posLatitud}}, lng:{{elemento.posLongitud}} },	   
-			{% endfor %} 	]
-	</script>
-
-
-
-
-
 <div class="container">
 	<h3>Establecimientos Encuestados</h3>
 	<div id="map" class="mapa"></div>
-
-	{% for elemento in lista %}
-	 {{elemento.nombre}}
-	 {{elemento.numero}}
-	 {{elemento.posLatitud}}
-	 {{elemento.posLongitud}}
-	</br>
-	{% endfor %}
-
 </div>	
 
+{% for e in lista%}
+
+{{e.name}}
+
+
+{%endfor%}
 
 {% endblock %}
+
+ 

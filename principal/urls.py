@@ -1,8 +1,22 @@
 from django.conf.urls import url
+
 from . import views
 
 urlpatterns = [
+
     url(r'^$', views.index, name='principal_index'),
+
+    url(r'^obtener_puntos/$', views.obtener_puntos, name='obtener_puntos'),
+
+
+
+
+    url(r'^crear_grupo/$', views.crear_grupo, name='crear_grupo'),
+    url(r'^(?P<id>\d+)/editar_grupo$', views.editar_grupo, name='editar_grupo'),
+    url(r'^(?P<id>\d+)/borrar_grupo$', views.borrar_grupo, name='borrar_grupo'),
+
+
+
 
     url(r'^crear_nacionalidad/$', views.crear_nacionalidad, name='crear_nacionalidad'),
     url(r'^(?P<id>\d+)/editar_nacionalidad$',views.editar_nacionalidad, name='editar_nacionalidad'),
@@ -51,4 +65,6 @@ urlpatterns = [
     url(r'^crear_asesoramiento/$', views.crear_asesoramiento, name='crear_asesoramiento'),
     url(r'^(?P<id>\d+)/editar_asesoramiento$', views.editar_asesoramiento, name='editar_asesoramiento'),
     url(r'^(?P<id>\d+)/borrar_asesoramiento$', views.borrar_asesoramiento, name='borrar_asesoramiento'),
+   
 
+]

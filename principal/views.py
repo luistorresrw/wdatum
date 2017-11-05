@@ -2,11 +2,27 @@
 
 from __future__ import unicode_literals
 
+from django.core import serializers
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
 from principal.forms import NacionalidadForm, NivelInstruccionForm, RegimenTenenciaForm, AnioConstruccionForm, MaterialEstructuraForm, TipoProduccionForm, EleccionCultivoForm, TipoCultivoForm, EspecieForm, FactorClimaticoForm, TripleLavadoForm, AsesoramientoForm
 from .models import Establecimiento, Nacionalidad, NivelInstruccion, RegimenTenencia, AnioConstruccion, MaterialEstructura, TipoProduccion, EleccionCultivo, TipoCultivo, Especie, FactorClimatico, TripleLavado, Asesoramiento
 
+def login(request):
+    pass
+
+def logout(request):
+    pass
+
+def auto_logout(request):
+    pass
+
+def change_pass(request):
+    pass
+
+def rec_pass(request):
+    pass
 
 
 def index(request):
@@ -14,17 +30,33 @@ def index(request):
 	context = {
 		'lista':lista,
 	}
+    
 	return render(request, 'index.html', context)
 
 
-def index(request):
-    mensaje = "index.html"
+def obtener_puntos(request):
+    puntos = Establecimiento.objects.all()
+    data = serializers.serialize("json",puntos)
+    return HttpResponse(data,content_type="application/json")
 
-    context = {'mensaje': mensaje
 
-    }
+# ---------------Grupos---------------------#
+def crear_grupo(request):
+    lista = Groups.objects.all()
+   
+        
+    
+
+    context = {'lista': lista }
     return render(request, 'index.html', context)
 
+
+
+def editar_grupo(request):
+    pass
+
+def borrar_grupo(request):
+    pass
 
 # ---------------Nacionalidad---------------------#
 
