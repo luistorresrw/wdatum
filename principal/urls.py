@@ -11,11 +11,11 @@ urlpatterns = [
 
 
 
-    url(r'^crear_grupo/$', views.crear_grupo, name='crear_grupo'),
-    url(r'^(?P<id>\d+)/editar_grupo$', views.editar_grupo, name='editar_grupo'),
-    url(r'^(?P<id>\d+)/borrar_grupo$', views.borrar_grupo, name='borrar_grupo'),
+    url(r'^crear_usuario/$', views.crear_usuario, name='crear_usuario'),
+    url(r'^(?P<id>\d+)/editar_usuario$', views.editar_usuario, name='editar_usuario'),
+    url(r'^(?P<id>\d+)/borrar_usuario$', views.borrar_usuario, name='borrar_usuario'),
 
-
+    
 
 
     url(r'^crear_nacionalidad/$', views.crear_nacionalidad, name='crear_nacionalidad'),

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+	<div class="col s12">
+		<h3>Crear Usuario</h3>
+		<div class="row">
+			<div class="col s12">
+				<form action="" method="POST">{% csrf_token %}
+					<div class="input-field col s6">
+						<div class="input-field col s12">
+        					{{form.username}}
+        					<label for="email">Email</label>
+        				</div>
+      					
+      					<div class="input-field col s12">
+        					{{form.first_name}}	
+        					<label for="first_name">Nombre</label>
+        				</div>
+        				<div class="input-field col s12">
+        					{{form.last_name}}
+        					<label for="last_name">Apellido</label>
+        				</div>
+        				<div class="input-field col s12">
+        					{{form.dni}}
+        					<label for="last_name">D.N.I. Nro.</label>
+        				</div>
+ 
+        				<div class="input-field col s12">
+						    
+							{{form.rol}}
+	    					
+
+						    
+						    <label>Seleccione el rol de usuario</label>
+						</div>
+
+  						
+
+
+							
+								
+    
+						
+						
+						
+	    		</form>	<br>
+	    		<button class="btn waves-effect light-green" type="submit" name="action">Crear 	Nuevo<i class="material-icons right">add</i>
+				</button>
+	  		</div>
+    	</div>
+    	{% if lista %}
+    	<table class="highlight bordered responsive-table">
+	        <thead>
+	          	<tr>
+	              	<th>Id</th>
+	              	<th>Usuario</th>
+	              	<th>Nombre</th>
+	              	<th>Apellido</th>
+	              	<th>Password</th>
+	              	<th>Rol</th>
+	              	<th>activo</th>
+	              	<th>Acciones</th>
+	          	</tr>
+	        </thead>
+	        <tbody>
+     			{% for elemento in lista %}     
+		          	<tr>
+		            	<td>{{elemento.id}}</td>
+		            	<td>{{elemento.username}}</td>
+		            	<td>{{elemento.first_name}}</td>
+		            	<td>{{elemento.last_name}}</td>
+		            	<td>{{elemento.password}}</td>
+		            	<td>{{elemento.rol}}</td>
+		            	<td>{{elemento.is_active}}</td>
+		            	<td>
+		            		<a href="{% url 'editar_usuario' elemento.id %}"><i class="material-icons">edit</i> </a>
+		                	<a href="{% url 'borrar_usuario' elemento.id %}"> <i class="material-icons">delete</i></a>
+		            	</td>
+		          	</tr>
+          		{% endfor %}
+        	</tbody>
+      	</table>
+      	{% endif %}
+    </div>
+</div>
+{% endblock %}
+

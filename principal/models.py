@@ -4,8 +4,19 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from django.contrib.auth.models import User
 
 from geoposition.fields import GeopositionField
+
+class Usuario(User):
+	ROL_CHOICES = (
+        ('Administrador', 'Administrador'),
+        ('Operador', 'Operador'),
+        ('Encuestador', 'Encuestador'),
+    )
+	dni = models.CharField(max_length=8)
+	rol = models.CharField(max_length=15, choices=ROL_CHOICES)
+	 
 
 
 class Nacionalidad(models.Model):
