@@ -21,84 +21,84 @@ class Usuario(User):
 
 class Nacionalidad(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class NivelInstruccion(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class RegimenTenencia(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class AnioConstruccion(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class MaterialEstructura(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class TipoProduccion(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class EleccionCultivo(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class TipoCultivo(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class Especie(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class FactorClimatico(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class TripleLavado(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
 
 class Asesoramiento(models.Model):
 	descripcion = models.CharField(max_length=50)
-
+	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 

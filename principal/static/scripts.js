@@ -39,4 +39,7 @@ function initMap() {
 	});
 }
 
- 
+ $(document).ready(function() {
+    $('select').material_select();
+  });
+  

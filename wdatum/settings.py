@@ -64,6 +64,13 @@ WSGI_APPLICATION = 'wdatum.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+    #'default': {
+    #    'ENGINE': 'django.db.backends.mysql',
+    #    'NAME': 'sql10204083',
+    #    'USER': 'sql10204083',
+    #    'PASSWORD': 'ebM7S5yqg9',
+    #    'HOST': 'sql10.freemysqlhosting.net',                      
+    #}
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
@@ -113,3 +120,9 @@ STATIC_URL = '/static/'
 
 GEOPOSITION_GOOGLE_MAPS_API_KEY =  'AIzaSyDkKy8gqIij-B-wdd3tFe2kLIA1zRlCtQo'
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'mdatumudc@gmail.com'
+EMAIL_HOST_PASSWORD = 'mdat1234'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'mdatumudc@gmail.com'

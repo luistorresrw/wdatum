@@ -3,28 +3,14 @@ from principal import models as principal_models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-'''
-ROL_CHOICES = (
-	('Administrador', 'Administrador'),
-	('Operador', 'Operador'),
-	('Encuestador', 'Encuestador'),
-)
-'''
+
 
 class UsuarioForm(forms.ModelForm):
-	#username = forms.CharField(widget=forms.TextInput())
-	#last_name = forms.CharField(widget=forms.TextInput())
-	#first_name = forms.CharField(widget=forms.TextInput())
-	#email = forms.EmailField(widget=forms.TextInput())
-	
-	#dni = forms.CharField(widget=forms.TextInput())
-	#rol = forms.CharField(widget = forms.Select(choices = ROL_CHOICES))
-	
 	username = forms.EmailField(widget=forms.TextInput())
 
 	class Meta:
 		model = principal_models.Usuario
-		exclude = ('email','is_staff','last_login', 'password', 'date_joined', 'is_active','groups','user_permissions','is_superuser')
+		exclude = ('email','is_staff','last_login', 'password', 'date_joined', 'groups','user_permissions','is_superuser')
 
   
 class NacionalidadForm(forms.ModelForm):

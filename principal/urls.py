@@ -10,13 +10,12 @@ urlpatterns = [
 
 
 
+    url(r'^login/$', views.login, name='login'),
+
 
     url(r'^crear_usuario/$', views.crear_usuario, name='crear_usuario'),
     url(r'^(?P<id>\d+)/editar_usuario$', views.editar_usuario, name='editar_usuario'),
     url(r'^(?P<id>\d+)/borrar_usuario$', views.borrar_usuario, name='borrar_usuario'),
-
-    
-
 
     url(r'^crear_nacionalidad/$', views.crear_nacionalidad, name='crear_nacionalidad'),
     url(r'^(?P<id>\d+)/editar_nacionalidad$',views.editar_nacionalidad, name='editar_nacionalidad'),
@@ -65,6 +64,4 @@ urlpatterns = [
     url(r'^crear_asesoramiento/$', views.crear_asesoramiento, name='crear_asesoramiento'),
     url(r'^(?P<id>\d+)/editar_asesoramiento$', views.editar_asesoramiento, name='editar_asesoramiento'),
     url(r'^(?P<id>\d+)/borrar_asesoramiento$', views.borrar_asesoramiento, name='borrar_asesoramiento'),
-   
-
 ]

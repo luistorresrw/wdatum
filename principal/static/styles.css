@@ -8,6 +8,8 @@ vertical-align:top;
 width: 100%;
 }
  
- 
+.background-color, .btn-login-color
+{
+	background: #8BC34A;
+}
 
- 
