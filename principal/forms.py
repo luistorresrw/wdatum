@@ -2,6 +2,14 @@ from django import forms
 from principal import models as principal_models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.contrib import auth
+
+
+class LoginForm(forms.Form):
+    user = forms.EmailField(widget=forms.TextInput(attrs=dict({'class':'validate', 'type':'email', 'name':'email', 'id':'email'},render_value=False)))
+    password = forms.CharField(widget=forms.PasswordInput(attrs=dict({'class':'validate', 'type':'password', 'name':'password', 'id':'password'},render_value=False)))
+
+
 
 
 

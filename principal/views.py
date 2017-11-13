@@ -1,35 +1,68 @@
 # -*-coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core import serializers
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import EmailMultiAlternatives
-from principal.forms import *#NacionalidadForm, NivelInstruccionForm, RegimenTenenciaForm, AnioConstruccionForm, MaterialEstructuraForm, TipoProduccionForm, EleccionCultivoForm, TipoCultivoForm, EspecieForm, FactorClimaticoForm, TripleLavadoForm, AsesoramientoForm, UserForm
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from principal.forms import *
 from .models import Establecimiento, Nacionalidad, NivelInstruccion, RegimenTenencia, AnioConstruccion, MaterialEstructura, TipoProduccion, EleccionCultivo, TipoCultivo, Especie, FactorClimatico, TripleLavado, Asesoramiento, Usuario
 
+
+
+
 def login(request):
-    context={}
-    return render(request, 'login.html', context)
+    request.session.flush()
+    if request.user.is_authenticated():#si el usuario esta autenticado redirecciona a la pagina principal
+        return HttpResponseRedirect(reverse('principal'))
+    form = LoginForm()#declaramos una variable que reciba los campos del formulario
+    mensaje = '' #declaramos una variable con un mensaje vacio
+    user = None #declaro la variable user a None
+    if request.method == 'POST':#validamos que los datos vengan por Post
+        form = LoginForm(request.POST)#le pasamos el request a loginForm
+        if form.is_valid(): #verificamos que el formato de los datos sea correcto
+            usuario = form.data['user']#asignamos a los datos de usuario a una variable usuario
+            password = form.cleaned_data['password']#asignamos a los datos de password a una variable password
+            user = authenticate(username = usuario, password = password)#validamos que el usuario y la contraseña sean correctos
+            if user is not None:
+                request.session['user'] = usuario
+                request.session['password'] = password
+                auth_login(request, user)
+                return HttpResponseRedirect('principal')
+            else:
+                mensaje = 'Usuario y/o password incorrecto, verifíquelo e inténtelo nuevamente.'
+        else:
+            mensaje = 'Debe completar ambos campos.'#mandamos un mensaje de error
+    values = {
+        'form' : form,
+        'mensaje' : mensaje,
+    }
+    return render(request, 'login.html', values)
 
+@login_required
 def logout(request):
+    auth_logout(request) #cierra sesion
+    request.session.flush()
+    return redirect(reverse('login'))#redirecciona a login
+
+
+
+@login_required
+def cambiar_password(request):
     pass
 
-def auto_logout(request):
+def recuperar_password(request):
     pass
 
-def change_pass(request):
-    pass
-
-def rec_pass(request):
-    pass
-
-def index(request):
+def principal(request):
 	lista = Establecimiento.objects.all()
 	context = {
 		'lista':lista,
 	}
-	return render(request, 'index.html', context)
+	return render(request, 'principal.html', context)
 
 def obtener_puntos(request):
     puntos = Establecimiento.objects.all()
@@ -68,14 +101,32 @@ def crear_usuario(request):
 def editar_usuario(request, id):
     form = UsuarioForm()
     usuario = get_object_or_404(Usuario, id=id)
-
-###############
-
     lista = Usuario.objects.all().order_by('-is_active')
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            usuario.username = form.cleaned_data['username']
+            usuario.first_name = form.cleaned_data['first_name'] 
+            usuario.last_name = form.cleaned_data['last_name']
+            usuario.dni = form.cleaned_data['dni']
+            usuario.rol = form.cleaned_data['rol']
+            usuario.is_active = form.cleaned_data['is_active']
+            usuario.save()
+            return redirect('crear_usuario')
+        else:
+            form = UsuarioForm(instance=usuario)
+    
+
+
     context = {
     'lista':lista,
+    'form':form
     }
     return render(request, 'editar_usuario.html', context)
+
+
+    
+
 
 def borrar_usuario(request, id):
     usuario = get_object_or_404(Usuario, id=id)

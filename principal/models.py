@@ -1,11 +1,7 @@
 #-*-coding: utf-8 -*-
-
 from __future__ import unicode_literals
-
 from django.db import models
-
 from django.contrib.auth.models import User
-
 from geoposition.fields import GeopositionField
 
 class Usuario(User):
@@ -16,8 +12,6 @@ class Usuario(User):
     )
 	dni = models.CharField(max_length=8)
 	rol = models.CharField(max_length=15, choices=ROL_CHOICES)
-	 
-
 
 class Nacionalidad(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -25,13 +19,11 @@ class Nacionalidad(models.Model):
 	def __str__(self):
 		return self.descripcion
 
-
 class NivelInstruccion(models.Model):
 	descripcion = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
-
 
 class RegimenTenencia(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -39,13 +31,11 @@ class RegimenTenencia(models.Model):
 	def __str__(self):
 		return self.descripcion
 
-
 class AnioConstruccion(models.Model):
 	descripcion = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
-
 
 class MaterialEstructura(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -53,13 +43,11 @@ class MaterialEstructura(models.Model):
 	def __str__(self):
 		return self.descripcion
 
-
 class TipoProduccion(models.Model):
 	descripcion = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
-
 
 class EleccionCultivo(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -67,13 +55,11 @@ class EleccionCultivo(models.Model):
 	def __str__(self):
 		return self.descripcion
 
-
 class TipoCultivo(models.Model):
 	descripcion = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
-
 
 class Especie(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -81,13 +67,11 @@ class Especie(models.Model):
 	def __str__(self):
 		return self.descripcion
 
-
 class FactorClimatico(models.Model):
 	descripcion = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
-
 
 class TripleLavado(models.Model):
 	descripcion = models.CharField(max_length=50)
@@ -95,14 +79,11 @@ class TripleLavado(models.Model):
 	def __str__(self):
 		return self.descripcion
 
-
 class Asesoramiento(models.Model):
 	descripcion = models.CharField(max_length=50)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
-
-
 
 class Establecimiento(models.Model):
 	nombre = models.CharField(max_length=45)

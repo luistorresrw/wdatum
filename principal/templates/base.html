@@ -25,6 +25,7 @@
  		<div class="navbar-fixed">
  			<ul id="dropdown1" class="dropdown-content">
 				<li><a href="{% url 'crear_usuario' %}">Usuario</a></li>
+				<li class="divider"></li>
 				<li><a href="{% url 'crear_nacionalidad' %}">Nacionalidad</a></li>
 				<li class="divider"></li>
 				<li><a href="{% url 'crear_nivel_instruccion' %}">Nivel de Instrucción</a></li>
@@ -49,14 +50,23 @@
                 <li class="divider"></li>
 				<li><a href="{% url 'crear_asesoramiento' %}">Asesoramiento</a></li>
 			</ul>
+			<ul id="dropdown1" class="dropdown-content">
+				<li><a href="">Cambiar contraseña</a></li>
+				<li class="divider"></li>
+				<li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+			</ul>	
 	 		<nav>
 			    <div class="nav-wrapper  light-green">
 			    	<div class="container">
 			    		<img src="{% static 'img/logo_agro.png' %}" style="max-width: 55px; max-height: 55px">
-			    		<a href="{% url 'principal_index' %}" class="brand-logo"> W-datum</a>
+			    		<a href="{% url 'login' %}" class="brand-logo"> W-datum</a>
+			    		{% if user.is_authenticated %} 
 			    		<ul id="nav-mobile" class="right hide-on-med-and-down">
-				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administración<i class="material-icons right">arrow_drop_down</i></a></li>
+				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administración<i class="material-icons right">view_list</i></a></li>
+			    			
+				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Menú<i class="material-icons right">settings_applications</i></a></li>
 			    		</ul>
+			    		{% endif %}
 			    	</div>	
 			    </div>
 			    </div>

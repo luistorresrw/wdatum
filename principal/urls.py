@@ -3,14 +3,17 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    
 
-    url(r'^$', views.index, name='principal_index'),
+
+    url(r'^$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
+    url(r'^cambiar_password/$', views.cambiar_password, name='cambiar_password'),
+
 
     url(r'^obtener_puntos/$', views.obtener_puntos, name='obtener_puntos'),
 
-
-
-    url(r'^login/$', views.login, name='login'),
+    url(r'^principal/$', views.principal, name='principal'),
 
 
     url(r'^crear_usuario/$', views.crear_usuario, name='crear_usuario'),
