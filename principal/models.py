@@ -90,7 +90,7 @@ class Establecimiento(models.Model):
 	numero = models.CharField(max_length=45)
 	posLatitud = models.FloatField()
 	posLongitud = models.FloatField()
-	foto = models.ImageField(upload_to='fotos/', null=True)
+	#foto = models.ImageField(upload_to='fotos/', null=True)
 
 	def __str__(self):
 		return u'%s' % self.nombre

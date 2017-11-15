@@ -9,9 +9,10 @@ class LoginForm(forms.Form):
     user = forms.EmailField(widget=forms.TextInput(attrs=dict({'class':'validate', 'type':'email', 'name':'email', 'id':'email'},render_value=False)))
     password = forms.CharField(widget=forms.PasswordInput(attrs=dict({'class':'validate', 'type':'password', 'name':'password', 'id':'password'},render_value=False)))
 
-
-
-
+class CambiarPasswordForm(forms.Form):
+	password_actual = forms.CharField(widget=forms.PasswordInput(attrs=dict({'class':'validate', 'type':'password', 'name':'password', 'id':'password'},render_value=False)))
+	nuevo_password = forms.CharField(widget=forms.PasswordInput(attrs=dict({'class':'validate', 'type':'password', 'name':'password', 'id':'password'},render_value=False)))
+	confirmar_password = forms.CharField(widget=forms.PasswordInput(attrs=dict({'class':'validate', 'type':'password', 'name':'password', 'id':'password'},render_value=False)))
 
 class UsuarioForm(forms.ModelForm):
 	username = forms.EmailField(widget=forms.TextInput())

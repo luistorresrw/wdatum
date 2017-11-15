@@ -36,11 +36,11 @@ def login(request):
                 mensaje = 'Usuario y/o password incorrecto, verifíquelo e inténtelo nuevamente.'
         else:
             mensaje = 'Debe completar ambos campos.'#mandamos un mensaje de error
-    values = {
+    context = {
         'form' : form,
         'mensaje' : mensaje,
     }
-    return render(request, 'login.html', values)
+    return render(request, 'login.html', context)
 
 @login_required
 def logout(request):
@@ -48,21 +48,49 @@ def logout(request):
     request.session.flush()
     return redirect(reverse('login'))#redirecciona a login
 
-
-
 @login_required
 def cambiar_password(request):
-    pass
+    form = CambiarPasswordForm()
+    mensaje = ""
+    if request.method == 'POST':
+        form = CambiarPasswordForm(request.POST)
+        if form.is_valid():
+            usuario = request.user
+            password = form.data['password_actual']
+            user = authenticate(username=usuario, password=password)
+            if user is not None:
+                nuevo_password = form.cleaned_data['nuevo_password']
+                confirmar_password = form.cleaned_data['confirmar_password']
+                if nuevo_password == confirmar_password:
+                    user.set_password(nuevo_password)
+                    try:
+                        user.save()
+                    except Exception as e:
+                        raise e
+                    logout(request)
+                    return redirect(reverse('login'))
+                else:
+                    mensaje = "Los password no coinciden."
+            else:
+                mensaje = "Password actual no coincide con el usuario logueado."
+        else:
+            mensaje = "Debe completar todos los campos."
+    context = {
+        'mensaje':mensaje,
+        'form':form
+        }
+    return render(request, 'cambiar_password.html', context)
+
 
 def recuperar_password(request):
     pass
 
 def principal(request):
-	lista = Establecimiento.objects.all()
-	context = {
+    lista = Establecimiento.objects.all()
+    context = {
 		'lista':lista,
 	}
-	return render(request, 'principal.html', context)
+    return render(request, 'principal.html', context)
 
 def obtener_puntos(request):
     puntos = Establecimiento.objects.all()
@@ -70,7 +98,7 @@ def obtener_puntos(request):
     return HttpResponse(data,content_type="application/json")
 
 # ---------------Usuarios---------------------#
-
+@login_required
 def crear_usuario(request):
     lista = Usuario.objects.all().order_by('-is_active')
     usuario = Usuario()
@@ -97,7 +125,8 @@ def crear_usuario(request):
         form = UsuarioForm()
     context = {'lista': lista, 'form': form, }
     return render(request, 'crear_usuario.html', context)
-          
+
+@login_required          
 def editar_usuario(request, id):
     form = UsuarioForm()
     usuario = get_object_or_404(Usuario, id=id)
@@ -115,19 +144,13 @@ def editar_usuario(request, id):
             return redirect('crear_usuario')
         else:
             form = UsuarioForm(instance=usuario)
-    
-
-
     context = {
     'lista':lista,
     'form':form
     }
     return render(request, 'editar_usuario.html', context)
 
-
-    
-
-
+@login_required
 def borrar_usuario(request, id):
     usuario = get_object_or_404(Usuario, id=id)
     usuario.is_active = False
@@ -136,6 +159,7 @@ def borrar_usuario(request, id):
 
 # ---------------Nacionalidad---------------------#
 
+@login_required
 def crear_nacionalidad(request):
     lista = Nacionalidad.objects.all().order_by('-is_active')
     if request.method == 'POST':
@@ -147,6 +171,7 @@ def crear_nacionalidad(request):
     context = {'lista': lista, 'form': form, }
     return render(request, 'crear_nacionalidad.html', context)
 
+@login_required
 def editar_nacionalidad(request, id):
     form = NacionalidadForm()
     nacionalidad = get_object_or_404(Nacionalidad, id=id)
@@ -162,6 +187,7 @@ def editar_nacionalidad(request, id):
     context = {'lista': lista, 'form': form, }
     return render(request, './editar_nacionalidad.html', context)
 
+@login_required
 def borrar_nacionalidad(request, id):
     nacionalidad = get_object_or_404(Nacionalidad, id=id)
     
@@ -171,6 +197,7 @@ def borrar_nacionalidad(request, id):
 
 # ------------Nivel de Instruccion-------------------
 
+@login_required
 def crear_nivel_instruccion(request):
     lista = NivelInstruccion.objects.all()
     if request.method == 'POST':
@@ -183,6 +210,7 @@ def crear_nivel_instruccion(request):
     context = {'lista': lista, 'form': form, }
     return render(request, 'crear_nivel_instruccion.html', context)
 
+@login_required
 def editar_nivel_instruccion(request, id):
     form = NivelInstruccionForm()
     nivel_instruccion = get_object_or_404(NivelInstruccion, id=id)
@@ -198,6 +226,7 @@ def editar_nivel_instruccion(request, id):
     context = {'lista': lista, 'form': form, }
     return render(request, './editar_nivel_instruccion.html', context)
 
+@login_required
 def borrar_nivel_instruccion(request, id):
     nivel_instruccion = get_object_or_404(NivelInstruccion, id=id)
     nivel_instruccion.delete()
@@ -205,6 +234,7 @@ def borrar_nivel_instruccion(request, id):
 
 # ------------Regimen de Tenencia-------------------
 
+@login_required
 def crear_regimen_tenencia(request):
     lista = RegimenTenencia.objects.all()
     if request.method == 'POST':
@@ -216,6 +246,7 @@ def crear_regimen_tenencia(request):
     context = {'lista': lista, 'form': form, }
     return render(request, 'crear_regimen_tenencia.html', context)
 
+@login_required
 def editar_regimen_tenencia(request, id):
     form = RegimenTenenciaForm()
     regimen_tenencia = get_object_or_404(RegimenTenencia, id=id)
@@ -235,6 +266,7 @@ def editar_regimen_tenencia(request, id):
     }
     return render(request,'./editar_regimen_tenencia.html', context)
 
+@login_required
 def borrar_regimen_tenencia(request, id):
     regimen_tenencia = get_object_or_404(RegimenTenencia, id=id)
     regimen_tenencia.delete()
@@ -242,6 +274,7 @@ def borrar_regimen_tenencia(request, id):
 
 # ------------Año de construcción----------------------
 
+@login_required
 def crear_anio_construccion(request):
     lista = AnioConstruccion.objects.all()
     if request.method == 'POST':
@@ -253,6 +286,7 @@ def crear_anio_construccion(request):
     context = {'lista': lista, 'form': form }
     return render(request, 'crear_anio_construccion.html', context)
 
+@login_required
 def editar_anio_construccion(request, id):
     form = AnioConstruccionForm()
     anio_construccion = get_object_or_404(AnioConstruccion, id=id)
@@ -268,6 +302,7 @@ def editar_anio_construccion(request, id):
     context = {'lista': lista,'form': form,}
     return render(request,'./editar_anio_construccion.html', context)
 
+@login_required
 def borrar_anio_construccion(request, id):
     anio_construccion = get_object_or_404(AnioConstruccion, id=id)
     anio_construccion.delete()
@@ -275,6 +310,7 @@ def borrar_anio_construccion(request, id):
 
 # -----------Material Estructura-----------------------
 
+@login_required
 def crear_material_estructura(request):
     lista = MaterialEstructura.objects.all()
     if request.method == 'POST':
@@ -286,6 +322,7 @@ def crear_material_estructura(request):
     context = {'lista': lista, 'form': form}
     return render(request, 'crear_material_estructura.html', context)
 
+@login_required
 def editar_material_estructura(request, id):
     form = MaterialEstructuraForm()
     material_estructura = get_object_or_404(MaterialEstructura, id=id)
@@ -301,6 +338,7 @@ def editar_material_estructura(request, id):
     context = {'lista': lista, 'form':form}
     return render(request, './editar_material_estructura.html', context)
 
+@login_required
 def borrar_material_estructura(request, id):
     material_estructura = get_object_or_404(MaterialEstructura, id=id)
     material_estructura.delete()
@@ -308,6 +346,7 @@ def borrar_material_estructura(request, id):
 
 # -----------Tipo de Producción -----------------------
 
+@login_required
 def crear_tipo_produccion(request):
     lista = TipoProduccion.objects.all()
     if request.method == 'POST':
@@ -319,6 +358,7 @@ def crear_tipo_produccion(request):
     context = {'lista': lista, 'form': form}
     return render(request, 'crear_tipo_produccion.html', context)
 
+@login_required
 def editar_tipo_produccion(request, id):
     form = TipoProduccionForm()
     tipo_produccion = get_object_or_404(TipoProduccion, id=id)
@@ -334,6 +374,7 @@ def editar_tipo_produccion(request, id):
     context = {'lista': lista, 'form':form}
     return render(request, './editar_tipo_produccion.html', context)
 
+@login_required
 def borrar_tipo_produccion(request, id):
     tipo_produccion = get_object_or_404(TipoProduccion, id=id)
     tipo_produccion.delete()
@@ -341,6 +382,7 @@ def borrar_tipo_produccion(request, id):
 
 # -----------Eleccion de Cultivo ------------------------
 
+@login_required
 def crear_eleccion_cultivo(request):
     lista = EleccionCultivo.objects.all()
     if request.method == 'POST':
@@ -353,6 +395,7 @@ def crear_eleccion_cultivo(request):
     context = {'lista': lista, 'form': form}
     return render(request, 'crear_eleccion_cultivo.html', context)
 
+@login_required
 def editar_eleccion_cultivo(request, id):
     form = EleccionCultivoForm()
     eleccion_cultivo = get_object_or_404(EleccionCultivo, id=id)
@@ -368,6 +411,7 @@ def editar_eleccion_cultivo(request, id):
     context = {'lista': lista, 'form': form}
     return render(request, './editar_eleccion_cultivo.html', context)
 
+@login_required
 def borrar_eleccion_cultivo(request, id):
     eleccion_cultivo = get_object_or_404(EleccionCultivo, id=id)
     eleccion_cultivo.delete()
@@ -375,6 +419,7 @@ def borrar_eleccion_cultivo(request, id):
 
 # -----------Tipo de Cultivo ------------------------
 
+@login_required
 def crear_tipo_cultivo(request):
     lista = TipoCultivo.objects.all()
     if request.method == 'POST':
@@ -386,6 +431,7 @@ def crear_tipo_cultivo(request):
     context = {'lista': lista, 'form': form}
     return render(request, 'crear_tipo_cultivo.html', context)
 
+@login_required
 def editar_tipo_cultivo(request, id):
     form = TipoCultivoForm()
     tipo_cultivo = get_object_or_404(TipoCultivo, id=id)
@@ -401,6 +447,7 @@ def editar_tipo_cultivo(request, id):
     context = {'lista': lista, 'form': form}
     return render(request, './editar_tipo_cultivo.html', context)
 
+@login_required
 def borrar_tipo_cultivo(request, id):
     tipo_cultivo = get_object_or_404(TipoCultivo, id=id)
     tipo_cultivo.delete()
@@ -408,6 +455,7 @@ def borrar_tipo_cultivo(request, id):
 
 # ------------------Especie ----------------------------
 
+@login_required
 def crear_especie(request):
     lista = Especie.objects.all()
     if request.method == 'POST':
@@ -441,6 +489,7 @@ def borrar_especie(request, id):
 
 # ----------------Factor Climático-----------------------
 
+@login_required
 def crear_factor_climatico(request):
     lista = FactorClimatico.objects.all()
     if request.method == 'POST':
@@ -453,6 +502,7 @@ def crear_factor_climatico(request):
     context = {'lista': lista, 'form': form}
     return render(request, 'crear_factor_climatico.html', context)
 
+@login_required
 def editar_factor_climatico(request, id):
     form = FactorClimaticoForm()
     factor_climatico = get_object_or_404(FactorClimatico, id=id)
@@ -468,6 +518,7 @@ def editar_factor_climatico(request, id):
     context = {'lista': lista, 'form': form}
     return render(request, './editar_factor_climatico.html', context)
 
+@login_required
 def borrar_factor_climatico(request, id):
     factor_climatico= get_object_or_404(FactorClimatico, id=id)
     factor_climatico.delete()
@@ -475,6 +526,7 @@ def borrar_factor_climatico(request, id):
 
 # ----------------Triple Lavado-----------------------
 
+@login_required
 def crear_triple_lavado(request):
     lista = TripleLavado.objects.all()
     if request.method == 'POST':
@@ -486,6 +538,7 @@ def crear_triple_lavado(request):
     context = {'lista': lista, 'form': form}
     return render(request, 'crear_triple_lavado.html', context)
 
+@login_required
 def editar_triple_lavado(request, id):
     form = TripleLavadoForm()
     triple_lavado = get_object_or_404(TripleLavado, id=id)
@@ -501,6 +554,7 @@ def editar_triple_lavado(request, id):
     context = {'lista': lista, 'form': form}
     return render(request, './editar_triple_lavado.html', context)
 
+@login_required
 def borrar_triple_lavado(request, id):
     triple_lavado= get_object_or_404(TripleLavado, id=id)
     triple_lavado.delete()
@@ -508,6 +562,7 @@ def borrar_triple_lavado(request, id):
 
 # ----------------Asesoramiento-----------------------
 
+@login_required
 def crear_asesoramiento(request):
     lista = Asesoramiento.objects.all()
     if request.method == 'POST':
@@ -520,6 +575,7 @@ def crear_asesoramiento(request):
     context = {'lista': lista, 'form': form}
     return render(request, 'crear_asesoramiento.html', context)
 
+@login_required
 def editar_asesoramiento(request, id):
     form = AsesoramientoForm()
     asesoramiento = get_object_or_404(Asesoramiento, id=id)
@@ -535,6 +591,7 @@ def editar_asesoramiento(request, id):
     context = {'lista': lista, 'form': form}
     return render(request, './editar_asesoramiento.html', context)
 
+@login_required
 def borrar_asesoramiento(request, id):
     asesoramiento = get_object_or_404(Asesoramiento, id=id)
     asesoramiento.delete()
