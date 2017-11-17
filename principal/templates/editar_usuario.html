@@ -26,16 +26,19 @@
         					{{form.dni}}
         					<label for="last_name">D.N.I. Nro.</label>
         				</div>
-        				<div class="input-field col s12">
+
+						<div class="input-field col s12">
 							{{form.rol}}
 	    					<label>Seleccione el rol de usuario</label>
+
 						</div>
-						{{form.is_active}}
+
+
 						<div>
 							<button class="btn waves-effect light-green" type="submit" >Actualizar
 					    		<i class="material-icons right">edit</i>
 					  		</button>
-					  		<a href="{% url 'crear_usuario' %}"> Cancelar<i class="material-icons">back</i></a>	
+					  		<a href="{% url 'crear_usuario' %}"> Cancelar<i class="material-icons">back</i></a>
 						</div>
   					</div>
 	  			</form>	<br>

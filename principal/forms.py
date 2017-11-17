@@ -14,9 +14,11 @@ class CambiarPasswordForm(forms.Form):
 	nuevo_password = forms.CharField(widget=forms.PasswordInput(attrs=dict({'class':'validate', 'type':'password', 'name':'password', 'id':'password'},render_value=False)))
 	confirmar_password = forms.CharField(widget=forms.PasswordInput(attrs=dict({'class':'validate', 'type':'password', 'name':'password', 'id':'password'},render_value=False)))
 
+class RecuperarPasswordForm(forms.Form):
+	email_user = forms.CharField(widget=forms.EmailInput(attrs=dict({'class':'validate', 'type':'email', 'name':'email' },render_value=False)))
+
 class UsuarioForm(forms.ModelForm):
 	username = forms.EmailField(widget=forms.TextInput())
-
 	class Meta:
 		model = principal_models.Usuario
 		exclude = ('email','is_staff','last_login', 'password', 'date_joined', 'groups','user_permissions','is_superuser')

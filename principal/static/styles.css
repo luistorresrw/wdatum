@@ -13,3 +13,16 @@ width: 100%;
 	background: #8BC34A;
 }
 
+
+#toast-container
+{
+    bottom:auto !important;
+    right: auto !important;
+    top: 10%;
+    left: 50%;
+
+}
+
+.toast{
+align:center;
+}
