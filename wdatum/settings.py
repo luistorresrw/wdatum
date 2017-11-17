@@ -64,17 +64,17 @@ WSGI_APPLICATION = 'wdatum.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    #'default': {
-    #    'ENGINE': 'django.db.backends.mysql',
-    #    'NAME': 'sql10204083',
-    #    'USER': 'sql10204083',
-    #    'PASSWORD': 'ebM7S5yqg9',
-    #    'HOST': 'sql10.freemysqlhosting.net',                      
-    #}
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mdatum',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': '192.168.2.196',                      
     }
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
 }
 
 
