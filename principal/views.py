@@ -81,9 +81,35 @@ def cambiar_password(request):
         }
     return render(request, 'cambiar_password.html', context)
 
-
 def recuperar_password(request):
-    pass
+    form = RecuperarPasswordForm()
+    mensaje =''
+    usuario = Usuario()
+    if request.method == 'POST':
+        form = RecuperarPasswordForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email_user']
+            usuario = Usuario.objects.get(username=email)
+            if usuario:
+                password = Usuario.objects.make_random_password(length=8)
+                usuario.set_password(password)
+                usuario.save()
+                enviar_mail("Hola %s %s: <br> Bienvenido al Sistema de Administración de Encuestas Agropecuarias. "
+                        "<br> Sus nuevas credenciales de acceso son las siguientes:<br> <b>Usuario: %s. <br> Password: %s."
+                        "</b><br>Para su seguridad recuerde cambiar la contraseña asignada por una de su preferencia."%
+                        (usuario.first_name, usuario.last_name, usuario.username,password),
+                        usuario.username, 'Recuperación de password.')
+                return HttpResponseRedirect("/")
+            else:
+                mensaje = 'La direccion de email ingresada no es válida.'
+        else:
+            mensaje = 'Es obligatorio ingresar una dirección de email válida.'
+    context = {
+        'form':form,
+        'mensaje':mensaje,
+    }
+    return render(request, 'recuperar_password.html', context)
+
 
 def principal(request):
     lista = Establecimiento.objects.all()
@@ -100,6 +126,14 @@ def obtener_puntos(request):
 # ---------------Usuarios---------------------#
 @login_required
 def crear_usuario(request):
+    """MENSAJES AL USUARIO
+    1 cuando el usuario que se intenta dar de alta existe
+    2 cuando falla la creacion
+    3 cuando no tiene el formato correcto
+    4 cuando se creo con exito
+
+    """
+    mensaje = ""
     lista = Usuario.objects.all().order_by('-is_active')
     usuario = Usuario()
     if request.method == 'POST':
@@ -112,19 +146,33 @@ def crear_usuario(request):
             usuario.dni = form.cleaned_data['dni']
             usuario.rol = form.cleaned_data['rol']
             usuario.set_password(password)
-            usuario.save()
-            form = UsuarioForm(instance= usuario)
-            subject = 'Alta de usuario.'
-            html_content = ("Hola %s %s: <br> Bienvenido al Sistema de Administración de Encuestas Agropecuarias. <br> Sus credenciales de acceso son las siguientes:<br> <b>Usuario: %s. <br> Password: %s.</b><br>Para su seguridad recuerde cambiar la contraseña asignada por una de su preferencia."% (usuario.first_name, usuario.last_name, usuario.username,password))
-            from_email = 'm-datum UDC.'
-            to = usuario.username
-            msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
+            try:
+                usuario.save()
+                form = UsuarioForm(instance= usuario)
+                enviar_mail("Hola %s %s: <br> Bienvenido al Sistema de Administración de Encuestas Agropecuarias. "
+                        "<br> Sus credenciales de acceso son las siguientes:<br> <b>Usuario: %s. <br> Password: %s."
+                        "</b><br>Para su seguridad recuerde cambiar la contraseña asignada por una de su preferencia."%
+                        (usuario.first_name, usuario.last_name, usuario.username,password),
+                        usuario.username,
+                        'Alta de usuario.')
+                form = UsuarioForm()
+                mensaje = "El usuario se creo correctamente."
+
+            except:
+                mensaje = "Error al crear el usuario."
     else:
         form = UsuarioForm()
-    context = {'lista': lista, 'form': form, }
+
+    context = {'lista':lista, 'form':form,'mensaje':mensaje}
     return render(request, 'crear_usuario.html', context)
+
+def enviar_mail(mensaje,to,subject):
+    html_content = (mensaje)
+    from_email = 'm-datum UDC.'
+    msg = EmailMultiAlternatives(subject, html_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
 
 @login_required          
 def editar_usuario(request, id):
@@ -144,6 +192,9 @@ def editar_usuario(request, id):
             return redirect('crear_usuario')
         else:
             form = UsuarioForm(instance=usuario)
+    if request.method == 'GET':
+        form = UsuarioForm(instance=usuario)
+
     context = {
     'lista':lista,
     'form':form
@@ -161,14 +212,21 @@ def borrar_usuario(request, id):
 
 @login_required
 def crear_nacionalidad(request):
-    lista = Nacionalidad.objects.all().order_by('-is_active')
+    lista = Nacionalidad.objects.all().order_by('-is_active')#ordena el listado por es activo
+    mensaje=''#declaro un mensaje vacio
     if request.method == 'POST':
         form = NacionalidadForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()#guarda
+                form = NacionalidadForm()#crea un formulario vacio para que el template este limpio luego de crear un usuario
+                mensaje = "La nacionalidad de creo correctamente."
+            except:
+                mensaje = "Error al crear la nacionalidad"
+
     else:
         form = NacionalidadForm()
-    context = {'lista': lista, 'form': form, }
+    context = {'lista': lista, 'form': form, 'mensaje':mensaje }
     return render(request, 'crear_nacionalidad.html', context)
 
 @login_required
@@ -184,6 +242,8 @@ def editar_nacionalidad(request, id):
             return redirect('crear_nacionalidad')
         else:
             form = NacionalidadForm(instance=nacionalidad)
+    if request.method == 'GET':
+        form = NacionalidadForm(instance=nacionalidad)
     context = {'lista': lista, 'form': form, }
     return render(request, './editar_nacionalidad.html', context)
 
@@ -230,6 +290,8 @@ def editar_nivel_instruccion(request, id):
 def borrar_nivel_instruccion(request, id):
     nivel_instruccion = get_object_or_404(NivelInstruccion, id=id)
     nivel_instruccion.delete()
+    nivel_instruccion.is_active = False
+    nivel_instruccion.save()
     return redirect('crear_nivel_instruccion')
 
 # ------------Regimen de Tenencia-------------------
@@ -269,7 +331,8 @@ def editar_regimen_tenencia(request, id):
 @login_required
 def borrar_regimen_tenencia(request, id):
     regimen_tenencia = get_object_or_404(RegimenTenencia, id=id)
-    regimen_tenencia.delete()
+    regimen_tenencia.is_active = False
+    regimen_tenencia.save()
     return redirect('crear_regimen_tenencia')
 
 # ------------Año de construcción----------------------
@@ -305,7 +368,8 @@ def editar_anio_construccion(request, id):
 @login_required
 def borrar_anio_construccion(request, id):
     anio_construccion = get_object_or_404(AnioConstruccion, id=id)
-    anio_construccion.delete()
+    anio_construccion.is_active = False
+    anio_construccion.save()
     return redirect('crear_anio_construccion')
 
 # -----------Material Estructura-----------------------
@@ -341,7 +405,8 @@ def editar_material_estructura(request, id):
 @login_required
 def borrar_material_estructura(request, id):
     material_estructura = get_object_or_404(MaterialEstructura, id=id)
-    material_estructura.delete()
+    material_estructura.is_active=False
+    material_estructura.save()
     return redirect('crear_material_estructura')
 
 # -----------Tipo de Producción -----------------------
