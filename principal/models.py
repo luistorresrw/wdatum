@@ -181,13 +181,14 @@ class Agroquimico(models.Model):
 
 
 class Encuesta(models.Model):
+	fecha = models.DateField(auto_now=True)
 	establecimiento = models.ForeignKey('Establecimiento')
-	encuestado 		= models.ForeignKey('Encuestado')
-	familia 		= models.ForeignKey('Familia')
-	agroquimico 	= models.ForeignKey('Agroquimico')
-	creado			= models.DateField(default=None)
-	modificado 		= models.DateField(default=None)
-	eliminado 		= models.DateField(default=None)
+	encuestado = models.ForeignKey('Encuestado')
+	familia = models.ForeignKey('Familia')
+	agroquimico = models.ForeignKey('Agroquimico')
+	creado = models.DateField(default=None)
+	modificado = models.DateField(default=None)
+	eliminado = models.DateField(default=None)
 
 	class Meta:
 		db_table = 'encuesta'

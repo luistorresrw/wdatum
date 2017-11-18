@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^cambiar_password/$', views.cambiar_password, name='cambiar_password'),
     url(r'^recuperar_password/$', views.recuperar_password, name='recuperar_password'),
 
+    url(r'^exportar_xls/$', views.exportar_xls, name='exportar_xls'),
 
     url(r'^obtener_puntos/$', views.obtener_puntos, name='obtener_puntos'),
 

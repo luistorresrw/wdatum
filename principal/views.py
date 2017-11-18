@@ -9,9 +9,65 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from principal.forms import *
-from .models import Establecimiento, Nacionalidad, NivelInstruccion, RegimenTenencia, AnioConstruccion, MaterialEstructura, TipoProduccion, EleccionCultivo, TipoCultivo, Especie, FactorClimatico, TripleLavado, Asesoramiento, Usuario
+from .models import *
+from datetime import date
+import xlwt
+
+def exportar_xls(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="Encuestas.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Encuestas')
+
+    # Sheet header, first row
+    row_num = 0
 
 
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Fecha', 'Nombre establecimiento', 'Regimen de tenencia', 'Nombre Encuestado', 'Apellido Encuestado' 'Edad', 'Nacionalidad', 'Instruccion',
+               'Cultivos', 'Usa agroquimicos', 'Asesoramiento', 'Triple lavado', 'Agroquimicos usados', 'Plagas']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    encuestas = Encuesta.objects.all()
+    for encuesta in encuestas:
+        row_num += 1
+        row=[]
+        row.append(encuesta.fecha.strftime('%d/%m/%Y'))
+        row.append(encuesta.establecimiento.nombre)
+        row.append(encuesta.establecimiento.regimenTenencia.descripcion)
+        row.append(encuesta.encuestado.nombre)
+        row.append(encuesta.encuestado.apellido)
+        row.append(encuesta.encuestado.nacionalidad.descripcion)
+        row.append(encuesta.encuestado.nivelInstruccion.descripcion)
+
+
+        cultivos = Cultivo.objects.filter(encuesta=encuesta).values_list('especie',flat=True)
+       
+        row.append(cultivos)
+
+        row.append(encuesta.agroquimico.usa)
+        row.append(encuesta.agroquimico.asesoramiento.descripcion)
+        row.append(encuesta.agroquimico.tripleLavado.descripcion)
+
+        agroquimicos_usados = 'ss' #AgroquimicoUsado.objects.filter(encuesta=encuesta).values_list('producto',flat=True)
+        row.append(agroquimicos_usados)
+
+        plagas = 'dd' #AgroquimicoUsado.objects.filter(encuesta=encuesta).values_list('plaga',flat=True)
+        row.append(plagas)
+
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
 
 
 def login(request):
