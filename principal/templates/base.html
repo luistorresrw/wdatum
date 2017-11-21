@@ -18,11 +18,13 @@
       	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       	  
       	<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDkKy8gqIij-B-wdd3tFe2kLIA1zRlCtQo&callback=initMap"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYesQ7NUr0wgcuvPI-E7t3PUhHqBoGXp4&callback=initMap"></script>
+
         <script type="text/javascript" src="{% static 'scripts.js' %}"></script>
  	</head>
  	<body>
  		<div class="navbar-fixed">
+
  			<ul id="dropdown1" class="dropdown-content">
 				<li><a href="{% url 'crear_usuario' %}">Usuario</a></li>
 				<li class="divider"></li>
@@ -59,9 +61,10 @@
 			    <div class="nav-wrapper  light-green">
 			    	<div class="container">
 			    		<img src="{% static 'img/logo_agro.png' %}" style="max-width: 55px; max-height: 55px">
-			    		<a href="{% url 'login' %}" class="brand-logo"> W-datum</a>
+			    		<a href="{% url 'principal' %}" class="brand-logo"> W-datum</a>
 			    		{% if user.is_authenticated %} 
 			    		<ul id="nav-mobile" class="right hide-on-med-and-down">
+							<li><a href="{% url 'exportar_xls' %}">Exportar encuestas<i class="material-icons right">description</i></a></li>
 				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administración<i class="material-icons right">view_list</i></a></li>
 			    			
 				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Menú<i class="material-icons right">settings_applications</i></a></li>
@@ -69,7 +72,7 @@
 			    		{% endif %}
 			    	</div>	
 			    </div>
-			    </div>
+
 			</nav>
  		</div>
  			{% block content %}

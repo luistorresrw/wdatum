@@ -14,30 +14,45 @@ from datetime import date
 import xlwt
 
 def exportar_xls(request):
+    """Definicion que permite exportar los datos minimos de las encuestas
+       en una hoja de calculo tipo excel."""
+
+    #define el tipo de respuesta a ms-excel
     response = HttpResponse(content_type='application/ms-excel')
+    #Establece el nombre del archivo que se genera
     response['Content-Disposition'] = 'attachment; filename="Encuestas.xls"'
 
+    #Crea un libro de trabajo
     wb = xlwt.Workbook(encoding='utf-8')
+    #Crea una nueva hoja dentro del libro y le establece el nombre
     ws = wb.add_sheet('Encuestas')
 
-    # Sheet header, first row
+    #Crea un puntero a la primer fila dentro de la hoja
     row_num = 0
 
 
-
+    #Define un estilo de fuente
     font_style = xlwt.XFStyle()
+    #Establece el estilo Negrita
     font_style.font.bold = True
 
-    columns = ['Fecha', 'Nombre establecimiento', 'Regimen de tenencia', 'Nombre Encuestado', 'Apellido Encuestado' 'Edad', 'Nacionalidad', 'Instruccion',
-               'Cultivos', 'Usa agroquimicos', 'Asesoramiento', 'Triple lavado', 'Agroquimicos usados', 'Plagas']
+    #Define el nombre de las columnas dentro de la hoja
+    columns = ['Fecha', 'Nombre establecimiento', 'Regimen de tenencia', 'Nombre Encuestado',
+               'Apellido Encuestado' 'Edad', 'Nacionalidad', 'Instruccion','Cultivos',
+               'Usa agroquimicos', 'Asesoramiento', 'Triple lavado', 'Agroquimicos usados', 'Plagas']
 
+    #recorre el arreglo de
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
 
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
     encuestas = Encuesta.objects.all()
+
+
+
     for encuesta in encuestas:
+
         row_num += 1
         row=[]
         row.append(encuesta.fecha.strftime('%d/%m/%Y'))
@@ -49,25 +64,38 @@ def exportar_xls(request):
         row.append(encuesta.encuestado.nivelInstruccion.descripcion)
 
 
-        cultivos = Cultivo.objects.filter(encuesta=encuesta).values_list('especie',flat=True)
-       
-        row.append(cultivos)
+        row.append(query_to_str(Cultivo.objects.filter(encuesta=encuesta),True))
 
-        row.append(encuesta.agroquimico.usa)
+        row.append("Si" if encuesta.agroquimico.usa else "No")
         row.append(encuesta.agroquimico.asesoramiento.descripcion)
         row.append(encuesta.agroquimico.tripleLavado.descripcion)
 
-        agroquimicos_usados = 'ss' #AgroquimicoUsado.objects.filter(encuesta=encuesta).values_list('producto',flat=True)
-        row.append(agroquimicos_usados)
 
-        plagas = 'dd' #AgroquimicoUsado.objects.filter(encuesta=encuesta).values_list('plaga',flat=True)
-        row.append(plagas)
+        row.append(query_to_str(AgroquimicoUsado.objects.filter(encuesta=encuesta).values_list('producto',flat=True),False))
+
+
+        row.append(query_to_str(AgroquimicoUsado.objects.filter(encuesta=encuesta).values_list('plaga',flat=True),False))
 
         for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
 
     wb.save(response)
     return response
+
+
+
+def query_to_str(queryset,especie):
+    str_retorno = ""
+    if especie:
+        for element in queryset:
+            str_retorno += element.especie.descripcion + " "
+    else:
+        for element in queryset:
+            str_retorno += element + " "
+
+    return str_retorno
+
+
 
 
 def login(request):
