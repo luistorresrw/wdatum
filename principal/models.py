@@ -126,12 +126,12 @@ class Establecimiento(models.Model):
 	numero 				= models.CharField(max_length=45)
 	posLatitud 			= models.FloatField()
 	posLongitud 		= models.FloatField()
-	foto 				= models.ImageField(upload_to='fotos/', null=True)
+	foto 				= models.ImageField(upload_to='fotos/', null=True,blank=True)
 	regimenTenencia 	= models.ForeignKey('RegimenTenencia')
 	regimenOtros 		= models.CharField(max_length=50,blank=True)
-	creado				= models.DateField(default=None)
-	modificado 			= models.DateField(default=None)
-	eliminado 			= models.DateField(default=None)
+	creado				= models.DateField(default=None,null=True,blank=True)
+	modificado 			= models.DateField(default=None,null=True,blank=True)
+	eliminado 			= models.DateField(default=None,null=True,blank=True)
 
 	def __str__(self):
 		return u'%s' % self.nombre
@@ -147,9 +147,9 @@ class Encuestado(models.Model):
 	nivelInstruccion 	= models.ForeignKey('NivelInstruccion')
 	nivelCompleto 		= models.BooleanField(default=False)
 	viveEstablecimiento = models.BooleanField(default=False)
-	creado				= models.DateField(default=None)
-	modificado 			= models.DateField(default=None)
-	eliminado 			= models.DateField(default=None)
+	creado				= models.DateField(default=None,null=True,blank=True)
+	modificado 			= models.DateField(default=None,null=True,blank=True)
+	eliminado 			= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'encuestado'
@@ -159,9 +159,9 @@ class Familia(models.Model):
 	tieneHijos 	= models.BooleanField()
 	cantVarones = models.IntegerField()
 	cantMujeres = models.IntegerField()
-	creado		= models.DateField(default=None)
-	modificado	= models.DateField(default=None)
-	eliminado 	= models.DateField(default=None)
+	creado		= models.DateField(default=None,null=True,blank=True)
+	modificado	= models.DateField(default=None,null=True,blank=True)
+	eliminado 	= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'familia'
@@ -172,9 +172,9 @@ class Agroquimico(models.Model):
 	tripleLavado 		= models.ForeignKey('TripleLavado')
 	asesoramiento 		= models.ForeignKey('Asesoramiento')
 	asesoramientoOtro 	= models.CharField(max_length=50)
-	creado				= models.DateField(default=None)
-	modificado 			= models.DateField(default=None)
-	eliminado 			= models.DateField(default=None)
+	creado				= models.DateField(default=None,null=True,blank=True)
+	modificado 			= models.DateField(default=None,null=True,blank=True)
+	eliminado 			= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'agroquimico'
@@ -182,13 +182,14 @@ class Agroquimico(models.Model):
 
 class Encuesta(models.Model):
 	fecha = models.DateField(auto_now=True)
-	establecimiento = models.ForeignKey('Establecimiento')
-	encuestado = models.ForeignKey('Encuestado')
-	familia = models.ForeignKey('Familia')
-	agroquimico = models.ForeignKey('Agroquimico')
-	creado = models.DateField(default=None)
-	modificado = models.DateField(default=None)
-	eliminado = models.DateField(default=None)
+	establecimiento = models.OneToOneField('Establecimiento')
+	encuestado = models.OneToOneField('Encuestado')
+	familia = models.OneToOneField('Familia',null=True,blank=True)
+	agroquimico = models.OneToOneField('Agroquimico',null=True,blank=True)
+	usuario = models.OneToOneField('Usuario')
+	creado = models.DateField(default=None,null=True,blank=True)
+	modificado = models.DateField(default=None,null=True,blank=True)
+	eliminado = models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'encuesta'
@@ -199,9 +200,9 @@ class Invernaculo(models.Model):
 	superficieUnitaria 	= models.IntegerField()
 	materialEstructura 	= models.ForeignKey('MaterialEstructura')
 	anioContruccion	 	= models.ForeignKey('AnioConstruccion')
-	creado				= models.DateField(default=None)
-	modificado 			= models.DateField(default=None)
-	eliminado 			= models.DateField(default=None)
+	creado				= models.DateField(default=None,null=True,blank=True)
+	modificado 			= models.DateField(default=None,null=True,blank=True)
+	eliminado 			= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'invernaculo'
@@ -217,9 +218,9 @@ class Cultivo(models.Model):
 	largo 			= models.IntegerField()
 	tipoProducion 	= models.ForeignKey('TipoProduccion')
 	eleccionCultivo = models.ForeignKey('EleccionCultivo')
-	creado			= models.DateField(default=None)
-	modificado 		= models.DateField(default=None)
-	eliminado 		= models.DateField(default=None)
+	creado			= models.DateField(default=None,null=True,blank=True)
+	modificado 		= models.DateField(default=None,null=True,blank=True)
+	eliminado 		= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'cultivo'
@@ -230,9 +231,9 @@ class AgroquimicoUsado(models.Model):
 	plaga 				= models.CharField(max_length=50)
 	metodo_aplicacion 	= models.CharField(max_length=50)
 	frecuencia_uso 		= models.CharField(max_length=50)
-	creado				= models.DateField(default=None)
-	modificado 			= models.DateField(default=None)
-	eliminado 			= models.DateField(default=None)
+	creado				= models.DateField(default=None,null=True,blank=True)
+	modificado 			= models.DateField(default=None,null=True,blank=True)
+	eliminado 			= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'agroquimico_usado'
