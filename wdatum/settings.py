@@ -12,7 +12,7 @@ SECRET_KEY = 'k=(l9r0+o82b9cmhb^grnjldqed!f(0)e046)&hsz%hze^zafr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.41','127.0.0.1','192.168.2.194','172.16.253.93']
 
 
 # Application definition
@@ -27,7 +27,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'principal',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
 ]
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.TokenAuthentication',),
+}
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,17 +76,17 @@ WSGI_APPLICATION = 'wdatum.wsgi.application'
 
 DATABASES = {
 
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'mdatum',
-    #     'USER': 'root',
-    #     'PASSWORD': '123456',
-    #     'HOST': '192.168.2.196',
-    # }
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'mdatum',
+         'USER': 'root',
+         'PASSWORD': '123456',
+         'HOST': '',
+     }
+    #'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
 }
 
 # Password validation

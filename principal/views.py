@@ -1,6 +1,11 @@
 # -*-coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User, Group
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
+from .serializers import *
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core import serializers
@@ -50,7 +55,7 @@ def exportar_xls(request):
 
 
         cultivos = Cultivo.objects.filter(encuesta=encuesta).values_list('especie',flat=True)
-       
+
         row.append(cultivos)
 
         row.append(encuesta.agroquimico.usa)
@@ -197,7 +202,7 @@ def crear_usuario(request):
         if form.is_valid():
             password = Usuario.objects.make_random_password(length=8)
             usuario.username = form.cleaned_data['username']
-            usuario.first_name = form.cleaned_data['first_name'] 
+            usuario.first_name = form.cleaned_data['first_name']
             usuario.last_name = form.cleaned_data['last_name']
             usuario.dni = form.cleaned_data['dni']
             usuario.rol = form.cleaned_data['rol']
@@ -230,7 +235,7 @@ def enviar_mail(mensaje,to,subject):
     msg.send()
 
 
-@login_required          
+@login_required
 def editar_usuario(request, id):
     form = UsuarioForm()
     usuario = get_object_or_404(Usuario, id=id)
@@ -239,7 +244,7 @@ def editar_usuario(request, id):
         form = UsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
             usuario.username = form.cleaned_data['username']
-            usuario.first_name = form.cleaned_data['first_name'] 
+            usuario.first_name = form.cleaned_data['first_name']
             usuario.last_name = form.cleaned_data['last_name']
             usuario.dni = form.cleaned_data['dni']
             usuario.rol = form.cleaned_data['rol']
@@ -306,7 +311,7 @@ def editar_nacionalidad(request, id):
 @login_required
 def borrar_nacionalidad(request, id):
     nacionalidad = get_object_or_404(Nacionalidad, id=id)
-    
+
     nacionalidad.is_active=False
     nacionalidad.save()
     return redirect('crear_nacionalidad')
@@ -717,3 +722,24 @@ def borrar_asesoramiento(request, id):
     asesoramiento = get_object_or_404(Asesoramiento, id=id)
     asesoramiento.delete()
     return redirect('crear_asesoramiento')
+
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset            = User.objects.all().order_by('date_joined')
+    serializer_class    = UserSerializer
+
+class GroupviewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset            = Group.objects.all()
+    serializer_class    = GroupSerializer
+
+class RegimenTenenciaViewSet(viewsets.ModelViewSet):
+
+    queryset = RegimenTenencia.objects.all()
+    serializer_class = RegimenTenenciaSerializer
