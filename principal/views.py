@@ -5,6 +5,11 @@ from django.contrib.auth.models import User, Group
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from .serializers import *
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -776,3 +781,42 @@ class RegimenTenenciaViewSet(viewsets.ModelViewSet):
 
     queryset = RegimenTenencia.objects.all()
     serializer_class = RegimenTenenciaSerializer
+
+
+class UpdateViewSet(viewsets.ModelViewSet):
+
+    queryset = Updates.objects.all()
+    serializer_class = UpdatesSerializer
+
+@api_view(['GET'])
+def UpdatesPosteriores(request,last_update):
+    """
+    Devuelve todas las actualizaciones posteriores
+    a la recibida por parametro
+    """
+    updates = Updates.objects.filter(id__gt=last_update)
+
+    if request.method == 'GET':
+        serializer = UpdatesSerializer(updates,many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status = status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET','POST'])
+def sincroEncuestado(request):
+    """
+    Lista todos los encuestados o Crea nuevos
+    """
+
+    if request.method == "GET":
+        encuestados = Encuestado.objects.all()
+        serializer = EncuestadoSerializer(encuestados,many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        print request.data
+        serializer = EncuestadoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

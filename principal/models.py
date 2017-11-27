@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from geoposition.fields import GeopositionField
+from django.dispatch import receiver
+from django.db.models.signals import post_save, pre_save
 
 class Usuario(User):
 	ROL_CHOICES = (
@@ -181,15 +183,15 @@ class Agroquimico(models.Model):
 
 
 class Encuesta(models.Model):
-	fecha = models.DateField(auto_now=True)
+	fecha 			= models.DateField(auto_now=True)
 	establecimiento = models.OneToOneField('Establecimiento')
-	encuestado = models.OneToOneField('Encuestado')
-	familia = models.OneToOneField('Familia',null=True,blank=True)
-	agroquimico = models.OneToOneField('Agroquimico',null=True,blank=True)
-	usuario = models.OneToOneField('Usuario')
-	creado = models.DateField(default=None,null=True,blank=True)
-	modificado = models.DateField(default=None,null=True,blank=True)
-	eliminado = models.DateField(default=None,null=True,blank=True)
+	encuestado 		= models.OneToOneField('Encuestado')
+	familia 		= models.OneToOneField('Familia',null=True,blank=True)
+	agroquimico 	= models.OneToOneField('Agroquimico',null=True,blank=True)
+	usuario 		= models.OneToOneField('Usuario')
+	creado 			= models.DateField(default=None,null=True,blank=True)
+	modificado 		= models.DateField(default=None,null=True,blank=True)
+	eliminado 		= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'encuesta'
@@ -237,3 +239,36 @@ class AgroquimicoUsado(models.Model):
 
 	class Meta:
 		db_table = 'agroquimico_usado'
+
+class Updates(models.Model):
+	entidad 	= models.CharField(max_length=50)
+	id_entidad 	= models.IntegerField()
+	valor 		= models.CharField(max_length=50)
+
+	class Meta:
+		db_table = 'updates'
+
+SENDER_OPTIONS = ('Asesoramiento','TripleLavado','FactorClimatico',
+				  'Especie','TipoCultivo','EleccionCultivo','TipoProduccion',
+				  'MaterialEstructura','AnioConstruccion','RegimenTenencia',
+				  'NivelInstruccion','Nacionalidad',)
+
+@receiver(post_save)
+def generar_actualizacion(sender,instance,**kwargs):
+
+	if sender.__name__ in SENDER_OPTIONS:
+		if kwargs.get('created',True):
+			update = Updates()
+			update.entidad 		= sender.__name__
+			update.id_entidad	= instance.id
+			update.valor		= instance.descripcion
+			update.save()
+
+
+@receiver(pre_save)
+def to_upper(sender,instance,**kwargs):
+
+	if sender.__name__ in SENDER_OPTIONS:
+		print "instance pre %s" % instance.descripcion
+		instance.descripcion = instance.descripcion.upper()
+		print "instance after %s" % instance.descripcion
