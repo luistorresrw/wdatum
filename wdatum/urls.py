@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 router.register(r'users',views.UserViewSet)
 router.register(r'groups',views.GroupviewSet)
 router.register(r'regimen_tenencia', views.RegimenTenenciaViewSet)
+router.register(r'updates',views.UpdateViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -16,4 +17,6 @@ urlpatterns = [
     #url(r'^api-auth/',include('rest_framework.urls',namespace='rest_framework')),
     #url(r'^api-token-auth/', token_views.obtain_auth_token),
     url(r'^api/auth/', include('rest_auth.urls')),
+    url(r'^api/actualizaciones_posteriores_a/(?P<last_update>[0-9]+)/$',views.UpdatesPosteriores),
+    url(r'^api/sincro_encuestado/$',views.sincroEncuestado),
 ]
