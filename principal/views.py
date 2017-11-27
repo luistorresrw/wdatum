@@ -7,6 +7,7 @@ from rest_framework import viewsets
 from .serializers import *
 
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.core import serializers
 from django.core.mail import EmailMultiAlternatives
@@ -245,15 +246,16 @@ def crear_usuario(request):
                         usuario.username,
                         'Alta de usuario.')
                 form = UsuarioForm()
-                mensaje = "El usuario se creo correctamente."
+                messages.success(request, 'El usuario se creo correctamente.')
 
             except:
-                mensaje = "Error al crear el usuario."
+                messages.error(request, 'Error al crear usuario')
     else:
         form = UsuarioForm()
 
     context = {'lista':lista, 'form':form,'mensaje':mensaje}
     return render(request, 'crear_usuario.html', context)
+
 
 def enviar_mail(mensaje,to,subject):
     html_content = (mensaje)
@@ -278,8 +280,10 @@ def editar_usuario(request, id):
             usuario.rol = form.cleaned_data['rol']
             usuario.is_active = form.cleaned_data['is_active']
             usuario.save()
+            messages.success(request, 'El usuario se editó correctamente.')
             return redirect('crear_usuario')
         else:
+            messages.error(request, 'Error al editar usuario')
             form = UsuarioForm(instance=usuario)
     if request.method == 'GET':
         form = UsuarioForm(instance=usuario)
@@ -295,6 +299,7 @@ def borrar_usuario(request, id):
     usuario = get_object_or_404(Usuario, id=id)
     usuario.is_active = False
     usuario.save()
+    messages.success(request, 'El usuario se eliminó correctamente.')
     return redirect('crear_usuario')
 
 # ---------------Nacionalidad---------------------#
