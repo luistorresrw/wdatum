@@ -8,7 +8,7 @@ from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 from django.contrib.auth.decorators import login_required
@@ -814,55 +814,108 @@ def lastUpdate(request):
     else:
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET','POST'])
-def sincroEncuestado(request):
+class EncuestadoViewSet(viewsets.ModelViewSet):
     """
     API endpoint que Lista todos los encuestados o Crea nuevos
     """
 
-    if request.method == "GET":
-        encuestados = Encuestado.objects.all()
-        serializer = EncuestadoSerializer(encuestados,many=True)
-        return Response(serializer.data)
-    elif request.method == "POST":
+    queryset = Encuestado.objects.all()
+    serializer_class = EncuestadoSerializer
 
-        serializer = EncuestadoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET','POST'])
-def sincroEstablecimiento(request):
+
+class EstablecimientoViewSet(viewsets.ModelViewSet):
     """
     API endpoint que lista todos los establecimientos o crea nuevos
     """
+    queryset = Establecimiento.objects.all()
+    serializer_class = EstablecimientoSerializer
 
-    if request.method == 'GET':
-        establecimientos = Establecimiento.objects.all()
-        serializer = EstablecimientoSerializer(establecimientos,many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = EstablecimientoSerializer(data=request.data,files=request.files)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status= status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+class RegimenTenenciaViewSet(viewsets.ModelViewSet):
 
+    queryset = RegimenTenencia.objects.all()
+    serializer_class = RegimenTenenciaSerializer
 
-@api_view(['GET','POST'])
-def sincroFamilia(request):
+class FamiliaViewSet(viewsets.ModelViewSet):
     """
     API endpoint que lista todos los registros de familia
     o crea un nuevo registro en la base de datos
     """
-    if request.method == 'GET':
-        familias = Familia.objects.all()
-        serializer = FamiliaSerializer(familias,many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = FamiliaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+    queryset = Familia.objects.all()
+    serializer_class = FamiliaSerializer
+
+
+class AgroquimicoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint que lista todos los registros de agroquimicos
+    o crea un nuevo registro en la base de datos
+    """
+    queryset = Agroquimico.objects.all()
+    serializer_class = AgroquimicoSerializer
+
+class NacionalidadViewSet(viewsets.ModelViewSet):
+
+    queryset = Nacionalidad.objects.all()
+    serializer_class = NacionalidadSerializer
+
+class NivelInstruccionViewSet(viewsets.ModelViewSet):
+
+    queryset = NivelInstruccion.objects.all()
+    serializer_class = NivelInstruccionSerializer
+
+class FactorClimaticoViewSet(viewsets.ModelViewSet):
+
+    queryset = FactorClimatico.objects.all()
+    serializer_class = FactorClimaticoSerializer
+
+class TripleLavadoViewSet(viewsets.ModelViewSet):
+
+    queryset = TripleLavado.objects.all()
+    serializer_class = TripleLavadoSerializer
+
+class AsesoramientoViewSet(viewsets.ModelViewSet):
+
+    queryset = Asesoramiento.objects.all()
+    serializer_class = AsesoramientoSerializer
+
+class EncuestaViewSet(viewsets.ModelViewSet):
+
+    queryset = Encuesta.objects.all()
+    serializer_class = EncuestaSerializer
+
+class InvernaculoViewSet(viewsets.ModelViewSet):
+    queryset = Invernaculo.objects.all()
+    serializer_class = InvernaculoSerializer
+
+class MaterialEstructuraViewSet(viewsets.ModelViewSet):
+    queryset = MaterialEstructura.objects.all()
+    serializer_class = MaterialEstructuraSerializer
+
+
+class AnioConstruccionViewSet(viewsets.ModelViewSet):
+    queryset = AnioConstruccion.objects.all()
+    serializer_class = AnioConstruccionSerializer
+
+class CultivosViewSet(viewsets.ModelViewSet):
+    queryset = Cultivo.objects.all()
+    serializer_class = CultivoSerializer
+
+class EspecieViewSet(viewsets.ModelViewSet):
+    queryset = Especie.objects.all()
+    serializer_class = EspecieSerializer
+
+class TipoCultivoViewSet(viewsets.ModelViewSet):
+    queryset = TipoCultivo.objects.all()
+    serializer_class = TipoCultivoSerializer
+
+class TipoProduccionViewSet(viewsets.ModelViewSet):
+    queryset = TipoProduccion.objects.all()
+    serializer_class = TipoProduccionSerializer
+
+class EleccionCultivoViewSet(viewsets.ModelViewSet):
+    queryset = EleccionCultivo.objects.all()
+    serializer_class = EleccionCultivoSerializer
+
+class AgroquimicoUsadoViewSet(viewsets.ModelViewSet):
+    queryset = AgroquimicoUsado.objects.all()
+    serializer_class = AgroquimicoUsadoSerializer

@@ -255,7 +255,11 @@ SENDER_OPTIONS = ('Asesoramiento','TripleLavado','FactorClimatico',
 
 @receiver(post_save)
 def generar_actualizacion(sender,instance,**kwargs):
-
+	"""
+	Captura la post_save signal de cualquiera de los modelos
+	declarados en SENDER_OPTIONS y registra la actualizacion
+	en updates para que este disponible a quien deba sicronizar.
+	"""
 	if sender.__name__ in SENDER_OPTIONS:
 		if kwargs.get('created',True):
 			update = Updates()
@@ -267,8 +271,10 @@ def generar_actualizacion(sender,instance,**kwargs):
 
 @receiver(pre_save)
 def to_upper(sender,instance,**kwargs):
-
+	"""
+	Capta la pre_save signal en cualquiera de los modelos
+	declarados en SENDER_OPTIONS y transforma el texto
+	recibido en Uppercase
+	"""
 	if sender.__name__ in SENDER_OPTIONS:
-		print "instance pre %s" % instance.descripcion
 		instance.descripcion = instance.descripcion.upper()
-		print "instance after %s" % instance.descripcion
