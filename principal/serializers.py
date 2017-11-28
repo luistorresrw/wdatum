@@ -15,11 +15,11 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 
 
-class UpdatesSerializer(serializers.HyperlinkedModelSerializer):
+class UpdatesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Updates
-        fields = ('url','entidad','id_entidad','valor')
+        fields = ('id','entidad','id_entidad','valor')
 
 class EstablecimientoSerializer(serializers.ModelSerializer):
 

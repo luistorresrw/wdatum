@@ -7,6 +7,7 @@ from rest_framework.authtoken import views as token_views
 router = routers.DefaultRouter()
 router.register(r'users',views.UserViewSet)
 router.register(r'groups',views.GroupviewSet)
+router.register(r'regimen_tenencia', views.RegimenTenenciaViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
