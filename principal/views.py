@@ -772,21 +772,21 @@ class GroupviewSet(viewsets.ModelViewSet):
     queryset            = Group.objects.all()
     serializer_class    = GroupSerializer
 
-class RegimenTenenciaViewSet(viewsets.ModelViewSet):
 
-    queryset = RegimenTenencia.objects.all()
-    serializer_class = RegimenTenenciaSerializer
 
 
 class UpdateViewSet(viewsets.ModelViewSet):
-
+    """
+    API endpoint que gestiona todas las actualizaciones
+    generadas en la base de datos de las LookUp tables
+    """
     queryset = Updates.objects.all()
     serializer_class = UpdatesSerializer
 
 @api_view(['GET'])
 def UpdatesPosteriores(request,last_update):
     """
-    Devuelve todas las actualizaciones posteriores
+    API endpoint que Devuelve todas las actualizaciones posteriores
     a la recibida por parametro
     """
     updates = Updates.objects.filter(id__gt=last_update)
@@ -801,7 +801,7 @@ def UpdatesPosteriores(request,last_update):
 @api_view(['GET','POST'])
 def sincroEncuestado(request):
     """
-    Lista todos los encuestados o Crea nuevos
+    API endpoint que Lista todos los encuestados o Crea nuevos
     """
 
     if request.method == "GET":
@@ -809,9 +809,44 @@ def sincroEncuestado(request):
         serializer = EncuestadoSerializer(encuestados,many=True)
         return Response(serializer.data)
     elif request.method == "POST":
-        print request.data
+
         serializer = EncuestadoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET','POST'])
+def sincroEstablecimiento(request):
+    """
+    API endpoint que lista todos los establecimientos o crea nuevos
+    """
+
+    if request.method == 'GET':
+        establecimientos = Establecimiento.objects.all()
+        serializer = EstablecimientoSerializer(establecimientos,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = EstablecimientoSerializer(data=request.data,files=request.files)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status= status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET','POST'])
+def sincroFamilia(request):
+    """
+    API endpoint que lista todos los registros de familia
+    o crea un nuevo registro en la base de datos
+    """
+    if request.method == 'GET':
+        familias = Familia.objects.all()
+        serializer = FamiliaSerializer(familias,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = FamiliaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
