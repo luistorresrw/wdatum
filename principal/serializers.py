@@ -19,11 +19,11 @@ class RegimenTenenciaSerializer(serializers.HyperlinkedModelSerializer):
         model = RegimenTenencia
         fields = ('url','descripcion')
 
-class UpdatesSerializer(serializers.HyperlinkedModelSerializer):
+class UpdatesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Updates
-        fields = ('url','entidad','id_entidad','valor')
+        fields = ('id','entidad','id_entidad','valor')
 
 class EstablecimientoSerializer(serializers.HyperlinkedModelSerializer):
 

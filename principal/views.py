@@ -785,7 +785,7 @@ class RegimenTenenciaViewSet(viewsets.ModelViewSet):
 
 class UpdateViewSet(viewsets.ModelViewSet):
 
-    queryset = Updates.objects.all()
+    queryset = Updates.objects.all().order_by('id')
     serializer_class = UpdatesSerializer
 
 @api_view(['GET'])
@@ -802,6 +802,17 @@ def UpdatesPosteriores(request,last_update):
     else:
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def lastUpdate(request):
+    """
+    Devuelve la ultima actualizacion disponible
+    """
+    update = Updates.objects.latest('id')
+    if request.method == 'GET':
+        serializer = UpdatesSerializer(update)
+        return Response(serializer.data)
+    else:
+        return Response(status = status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','POST'])
 def sincroEncuestado(request):
