@@ -21,123 +21,129 @@ class UpdatesSerializer(serializers.ModelSerializer):
         model = Updates
         fields = ('id','entidad','id_entidad','valor')
 
-class EstablecimientoSerializer(serializers.HyperlinkedModelSerializer):
+class UpdatesFromMobileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UpdatesFromMobile
+        fields = '__all__'            
+
+class EstablecimientoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Establecimiento
         fields = '__all__'
 
-class EncuestadoSerializer(serializers.HyperlinkedModelSerializer):
+class EncuestadoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Encuestado
         fields = '__all__'
 
-class FamiliaSerializer(serializers.HyperlinkedModelSerializer):
+class FamiliaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Familia
         fields = '__all__'
 
-class AgroquimicoSerializer(serializers.HyperlinkedModelSerializer):
+class AgroquimicoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Agroquimico
         fields = '__all__'
 
-class RegimenTenenciaSerializer(serializers.HyperlinkedModelSerializer):
+class RegimenTenenciaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RegimenTenencia
         fields = '__all__'
 
 
-class NacionalidadSerializer(serializers.HyperlinkedModelSerializer):
+class NacionalidadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model =  Nacionalidad
         fields = '__all__'
 
-class NivelInstruccionSerializer(serializers.HyperlinkedModelSerializer):
+class NivelInstruccionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NivelInstruccion
         fields = '__all__'
 
-class FactorClimaticoSerializer(serializers.HyperlinkedModelSerializer):
+class FactorClimaticoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FactorClimatico
         fields = '__all__'
 
-class TripleLavadoSerializer(serializers.HyperlinkedModelSerializer):
+class TripleLavadoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TripleLavado
         fields = '__all__'
 
-class AsesoramientoSerializer(serializers.HyperlinkedModelSerializer):
+class AsesoramientoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Asesoramiento
         fields = '__all__'
 
 
-class EncuestaSerializer(serializers.HyperlinkedModelSerializer):
+class EncuestaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Encuesta
         fields = '__all__'
 
-class InvernaculoSerializer(serializers.HyperlinkedModelSerializer):
+class InvernaculoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Invernaculo
         fields = '__all__'
 
-class MaterialEstructuraSerializer(serializers.HyperlinkedModelSerializer):
+class MaterialEstructuraSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MaterialEstructura
         fields = '__all__'
 
-class AnioConstruccionSerializer(serializers.HyperlinkedModelSerializer):
+class AnioConstruccionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AnioConstruccion
         fields = '__all__'
 
-class CultivoSerializer(serializers.HyperlinkedModelSerializer):
+class CultivoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cultivo
         fields = '__all__'
 
-class EspecieSerializer(serializers.HyperlinkedModelSerializer):
+class EspecieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Especie
         fields = '__all__'
 
-class TipoCultivoSerializer(serializers.HyperlinkedModelSerializer):
+class TipoCultivoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TipoCultivo
         fields = '__all__'
 
-class TipoProduccionSerializer(serializers.HyperlinkedModelSerializer):
+class TipoProduccionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TipoProduccion
         fields = '__all__'
 
-class EleccionCultivoSerializer(serializers.HyperlinkedModelSerializer):
+class EleccionCultivoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EleccionCultivo
         fields = '__all__'
 
-class AgroquimicoUsadoSerializer(serializers.HyperlinkedModelSerializer):
+class AgroquimicoUsadoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AgroquimicoUsado

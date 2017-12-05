@@ -21,7 +21,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from principal.forms import *
 from .models import *
-from datetime import date
+from datetime import date,datetime
 import xlwt
 
 def exportar_xls(request):
@@ -802,6 +802,18 @@ def UpdatesPosteriores(request,last_update):
     else:
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def UpdatesFromMobile(request):
+    """
+    API endpoint que recibe las actualizaciones desde el movil
+    """
+    if request.method == 'POST':
+        update = UpdatesFromMobileSerializer(data=request.data)
+        if update.is_valid():
+            update.save()
+            return Response(update.data,status = status.HTTP_201_CREATED)
+        return Response(update.errors, status = status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET'])
 def lastUpdate(request):
     """
@@ -814,44 +826,83 @@ def lastUpdate(request):
     else:
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
-class EncuestadoViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_encuestado(request):
     """
     API endpoint que Lista todos los encuestados o Crea nuevos
     """
+    if request.method == 'GET':
+        encuestados = Encuestado.objects.all()
+        serializer = EncuestadoSerializer(encuestados,many=True)
+        return Response(serializer.data)
+    elif request.metho == 'POST':
+        encuestado = EncuestadoSerializer(data = request.data)
+        if encuestado.is_valid():
+            encuestado.save(cread = date.today())
+            return Response(encuestado.data, status = status.HTTP_201_CREATED)
+        return Response(encuestado.errors, status = status.HTTP_400_BAD_REQUEST)
 
-    queryset = Encuestado.objects.all()
-    serializer_class = EncuestadoSerializer
 
-
-
-class EstablecimientoViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_establecimiento(request):
+#class EstablecimientoViewSet(viewsets.ModelViewSet):
     """
     API endpoint que lista todos los establecimientos o crea nuevos
     """
-    queryset = Establecimiento.objects.all()
-    serializer_class = EstablecimientoSerializer
+
+    if request.method == "GET":
+        establecimientos = Establecimiento.objects.all()
+        serializer = EstablecimientoSerializer(establecimientos,many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        establecimiento = EstablecimientoSerializer(data = request.data)
+        if establecimiento.is_valid():
+            establecimiento.save(creado = date.today())
+            return Response(establecimiento.data,status= status.HTTP_201_CREATED)
+        return Response(establecimiento.errors,status= status.HTTP_400_BAD_REQUEST)
+#    queryset = Establecimiento.objects.all()
+#    serializer_class = EstablecimientoSerializer
 
 class RegimenTenenciaViewSet(viewsets.ModelViewSet):
 
     queryset = RegimenTenencia.objects.all()
     serializer_class = RegimenTenenciaSerializer
 
-class FamiliaViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST'])
+def sincro_familia(request):
     """
     API endpoint que lista todos los registros de familia
     o crea un nuevo registro en la base de datos
     """
-    queryset = Familia.objects.all()
-    serializer_class = FamiliaSerializer
+    if request.method == 'GET':
+        familias = Familia.objects.all()
+        serializer = FamiliaSerializer(familias,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        familia = FamiliaSerializer(data = request.data)
+        if familia.is_valid():
+            familia.save(creado = date.today())
+            return Response(familia.data, status = status.HTTP_201_CREATED)
+        return Response(familia.errors, status = status.HTTP_400_BAD_REQUEST)
 
 
-class AgroquimicoViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_agroquimico(request):
     """
     API endpoint que lista todos los registros de agroquimicos
     o crea un nuevo registro en la base de datos
     """
-    queryset = Agroquimico.objects.all()
-    serializer_class = AgroquimicoSerializer
+    if request.method == 'GET':
+        agroquimicos = Agroquimico.objects.all()
+        serializer = AgroquimicoSerializer(agroquimicos,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        agroquimico = AgroquimicoSerializer(request.data)
+        if agroquimico.is_valid():
+            agroquimico.save(creado = date.today())
+            return Response(agroquimico.data, status = status.HTTP_201_CREATED)
+        return Response(agroquimico.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 class NacionalidadViewSet(viewsets.ModelViewSet):
 
@@ -878,14 +929,41 @@ class AsesoramientoViewSet(viewsets.ModelViewSet):
     queryset = Asesoramiento.objects.all()
     serializer_class = AsesoramientoSerializer
 
-class EncuestaViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_encuesta(request):
+    """
+    API Endpoint que permite listar todas las encuestas
+    o crear nuevas encuestas
+    """
+    if request.method == 'GET':
+        encuestas = Encuesta.objects.all()
+        serializer = EncuestaSerializer(encuestas, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        encuesta = EncuestaSerializer(data = request.data)
+        if encuesta.is_valid():
+            encuesta.save(creado = date.today())
+            return Response(encuesta.data, status = status.HTTP_201_CREATED)
+        return Response(encuesta.errors, status = status.HTTP_400_BAD_REQUEST)
 
-    queryset = Encuesta.objects.all()
-    serializer_class = EncuestaSerializer
 
-class InvernaculoViewSet(viewsets.ModelViewSet):
-    queryset = Invernaculo.objects.all()
-    serializer_class = InvernaculoSerializer
+@api_view(['GET','POST','PUT'])
+def sincro_invernaculo(request):
+    """
+    API Endpoint que permite listar todos los invernaculos
+    o crear nuevos invernaculos
+    """
+    if request.method == 'GET':
+        invernaculos = Invernaculo.objects.all()
+        serializer = InvernaculoSerializer(invernaculos, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        invernaculo = InvernaculoSerializer(data = request.data)
+        if invernaculo.is_valid():
+            invernaculo.save(creado = date.today())
+            return Response(invernaculo.data, status = status.HTTP_201_CREATED)
+        return Response(invernaculo.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 class MaterialEstructuraViewSet(viewsets.ModelViewSet):
     queryset = MaterialEstructura.objects.all()
@@ -896,9 +974,22 @@ class AnioConstruccionViewSet(viewsets.ModelViewSet):
     queryset = AnioConstruccion.objects.all()
     serializer_class = AnioConstruccionSerializer
 
-class CultivosViewSet(viewsets.ModelViewSet):
-    queryset = Cultivo.objects.all()
-    serializer_class = CultivoSerializer
+@api_view(['GET','POST','PUT'])
+def sincro_cultivo(request):
+    """
+    API Endpoint que permite listar todos los cultivos
+    o crear nuevos cultivos
+    """
+    if request.method == 'GET':
+        cultivos = Cultivo.objects.all()
+        serializer = CultivoSerializer(cultivos, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        cultivo = CultivoSerializer(data = request.data)
+        if cultivo.is_valid():
+            cultivo.save(creado = date.today())
+            return Response(cultivo.data, status = status.HTTP_201_CREATED)
+        return Response(cultivo.errors, status = status.HTTP_400_BAD_REQUEST)
 
 class EspecieViewSet(viewsets.ModelViewSet):
     queryset = Especie.objects.all()
@@ -916,6 +1007,21 @@ class EleccionCultivoViewSet(viewsets.ModelViewSet):
     queryset = EleccionCultivo.objects.all()
     serializer_class = EleccionCultivoSerializer
 
-class AgroquimicoUsadoViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_agroquimico_usado(request):
+    """
+    API Endpoint que permite listar todos los Agroquimicos usados
+    o crear nuevos Agroquimicos usados
+    """
+    if request.method == 'GET':
+        agroquimico_usados = AgroquimicoUsado.objects.all()
+        serializer = AgroquimicoUsadoSerializer(agroquimico_usados, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        agroquimico_usado = AgroquimicoUsadoSerializer(data = request.data)
+        if agroquimico_usado.is_valid():
+            agroquimico_usado.save(creado = date.today())
+            return Response(agroquimico_usado.data, status = status.HTTP_201_CREATED)
+        return Response(agroquimico_usado.errors, status = status.HTTP_400_BAD_REQUEST)
     queryset = AgroquimicoUsado.objects.all()
     serializer_class = AgroquimicoUsadoSerializer
