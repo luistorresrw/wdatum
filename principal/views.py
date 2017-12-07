@@ -803,7 +803,7 @@ def UpdatesPosteriores(request,last_update):
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def UpdatesFromMobile(request):
+def updates_from_mobile(request):
     """
     API endpoint que recibe las actualizaciones desde el movil
     """

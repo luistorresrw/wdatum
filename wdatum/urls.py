@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^api/auth/', include('rest_auth.urls')),
     url(r'^api/actualizaciones_posteriores_a/(?P<last_update>[0-9]+)/$',views.UpdatesPosteriores),
     url(r'^api/last_update/$',views.lastUpdate),
+    url(r'^api/updates_from_mobile/$',views.updates_from_mobile),
     url(r'^api/sincro_establecimiento/$',views.sincro_establecimiento),
     url(r'^api/sincro_familia/$',views.sincro_familia),
     url(r'^api/sincro_encuestado/$',views.sincro_encuestado),
