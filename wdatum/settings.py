@@ -12,7 +12,7 @@ SECRET_KEY = 'k=(l9r0+o82b9cmhb^grnjldqed!f(0)e046)&hsz%hze^zafr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.37','192.168.1.41','127.0.0.1','192.168.2.194','172.16.253.93','192.168.0.107']
+ALLOWED_HOSTS = ['localhost','192.168.0.105']#, '192.168.1.37','192.168.1.41','127.0.0.1','192.168.2.194','172.16.253.93','192.168.0.107','192.168.0.104']
 
 
 # Application definition
@@ -76,17 +76,17 @@ WSGI_APPLICATION = 'wdatum.wsgi.application'
 
 DATABASES = {
 
-     'default': {
-         'ENGINE': 'django.db.backends.mysql',
-         'NAME': 'mdatum',
-         'USER': 'root',
-         'PASSWORD': '123456',
-         'HOST': '',
-     }
-    #'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #}
+     # 'default': {
+     #     'ENGINE': 'django.db.backends.mysql',
+     #     'NAME': 'mdatum',
+     #     'USER': 'root',
+     #     'PASSWORD': '123456',
+     #     'HOST': '',
+     # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 # Password validation
@@ -129,7 +129,6 @@ STATIC_URL = '/static/'
 
 
 
-GEOPOSITION_GOOGLE_MAPS_API_KEY =  'AIzaSyDkKy8gqIij-B-wdd3tFe2kLIA1zRlCtQo'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'mdatumudc@gmail.com'
