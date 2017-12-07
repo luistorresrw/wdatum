@@ -12,7 +12,11 @@ SECRET_KEY = 'k=(l9r0+o82b9cmhb^grnjldqed!f(0)e046)&hsz%hze^zafr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['localhost','192.168.0.105']#, '192.168.1.37','192.168.1.41','127.0.0.1','192.168.2.194','172.16.253.93','192.168.0.107','192.168.0.104']
+=======
+ALLOWED_HOSTS = ['localhost','192.168.1.37','192.168.1.41','127.0.0.1','192.168.2.194','172.16.253.93','192.168.0.107']
+>>>>>>> 29bdc017054ab6e07546ebd1152b0d7250c57922
 
 
 # Application definition
@@ -84,8 +88,13 @@ DATABASES = {
      #     'HOST': '',
      # }
     'default': {
+<<<<<<< HEAD
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+=======
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+>>>>>>> 29bdc017054ab6e07546ebd1152b0d7250c57922
     }
 }
 
@@ -129,6 +138,10 @@ STATIC_URL = '/static/'
 
 
 
+<<<<<<< HEAD
+=======
+#GEOPOSITION_GOOGLE_MAPS_API_KEY =  'AIzaSyDkKy8gqIij-B-wdd3tFe2kLIA1zRlCtQo'
+>>>>>>> 29bdc017054ab6e07546ebd1152b0d7250c57922
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'mdatumudc@gmail.com'

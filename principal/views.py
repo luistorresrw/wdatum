@@ -21,7 +21,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from principal.forms import *
 from .models import *
-from datetime import date
+from datetime import date,datetime
 import xlwt
 
 def exportar_xls(request):
@@ -111,17 +111,17 @@ def query_to_str(queryset,especie):
 
 def login(request):
     request.session.flush()
-    if request.user.is_authenticated():#si el usuario esta autenticado redirecciona a la pagina principal
+    if request.user.is_authenticated():  # si el usuario esta autenticado redirecciona a la pagina principal
         return HttpResponseRedirect(reverse('principal'))
-    form = LoginForm()#declaramos una variable que reciba los campos del formulario
-    mensaje = '' #declaramos una variable con un mensaje vacio
-    user = None #declaro la variable user a None
-    if request.method == 'POST':#validamos que los datos vengan por Post
-        form = LoginForm(request.POST)#le pasamos el request a loginForm
-        if form.is_valid(): #verificamos que el formato de los datos sea correcto
-            usuario = form.data['user']#asignamos a los datos de usuario a una variable usuario
-            password = form.cleaned_data['password']#asignamos a los datos de password a una variable password
-            user = authenticate(username = usuario, password = password)#validamos que el usuario y la contraseña sean correctos
+    form = LoginForm()  # declaramos una variable que reciba los campos del formulario
+    mensaje = ''  # declaramos una variable con un mensaje vacio
+    user = None  # declaro la variable user a None
+    if request.method == 'POST':  # validamos que los datos vengan por Post
+        form = LoginForm(request.POST)# le pasamos el request a loginForm
+        if form.is_valid():  # verificamos que el formato de los datos sea correcto
+            usuario = form.data['user']  # asignamos a los datos de usuario a una variable usuario
+            password = form.cleaned_data['password']  # asignamos a los datos de password a una variable password
+            user = authenticate(username = usuario, password = password)  # valida que usuario y contraseña sean correctos
             if user is not None:
                 request.session['user'] = usuario
                 request.session['password'] = password
@@ -130,7 +130,7 @@ def login(request):
             else:
                 mensaje = 'Usuario y/o password incorrecto, verifíquelo e inténtelo nuevamente.'
         else:
-            mensaje = 'Debe completar ambos campos.'#mandamos un mensaje de error
+            mensaje = 'Debe completar ambos campos.'  # mandamos un mensaje de error
     context = {
         'form' : form,
         'mensaje' : mensaje,
@@ -139,9 +139,10 @@ def login(request):
 
 @login_required
 def logout(request):
-    auth_logout(request) #cierra sesion
+    auth_logout(request)  # cierra sesion
     request.session.flush()
-    return redirect(reverse('login'))#redirecciona a login
+    return redirect(reverse('login'))  # redirecciona a login
+
 
 @login_required
 def cambiar_password(request):
@@ -176,6 +177,7 @@ def cambiar_password(request):
         }
     return render(request, 'cambiar_password.html', context)
 
+
 def recuperar_password(request):
     form = RecuperarPasswordForm()
     mensaje =''
@@ -209,14 +211,16 @@ def recuperar_password(request):
 def principal(request):
     lista = Establecimiento.objects.all()
     context = {
-		'lista':lista,
-	}
+        'lista':lista,
+    }
     return render(request, 'principal.html', context)
+
 
 def obtener_puntos(request):
     puntos = Establecimiento.objects.all()
     data = serializers.serialize("json",puntos)
     return HttpResponse(data,content_type="application/json")
+
 
 # ---------------Usuarios---------------------#
 @login_required
@@ -252,7 +256,6 @@ def crear_usuario(request):
                         'Alta de usuario.')
                 form = UsuarioForm()
                 messages.success(request, 'El usuario se creo correctamente.')
-
             except:
                 messages.error(request, 'Error al crear usuario')
     else:
@@ -294,10 +297,11 @@ def editar_usuario(request, id):
         form = UsuarioForm(instance=usuario)
 
     context = {
-    'lista':lista,
-    'form':form
+        'lista':lista,
+        'form':form,
     }
     return render(request, 'editar_usuario.html', context)
+
 
 @login_required
 def borrar_usuario(request, id):
@@ -311,115 +315,156 @@ def borrar_usuario(request, id):
 
 @login_required
 def crear_nacionalidad(request):
-    lista = Nacionalidad.objects.all().order_by('-is_active')#ordena el listado por es activo
-    mensaje=''#declaro un mensaje vacio
+    lista = Nacionalidad.objects.all().order_by('-is_active')  # ordena el listado por es activo
     if request.method == 'POST':
         form = NacionalidadForm(request.POST)
         if form.is_valid():
             try:
                 form.save()#guarda
-                form = NacionalidadForm()#crea un formulario vacio para que el template este limpio luego de crear un usuario
-                mensaje = "La nacionalidad de creo correctamente."
+                form = NacionalidadForm()  # crea un formulario vacio para que el template este limpio luego de crear un usuario
+                messages.success(request, 'La nacionalidad se creó correctamente.')
             except:
-                mensaje = "Error al crear la nacionalidad"
+                messages.error(request, 'Error al crear la nacionalidad.')
 
     else:
         form = NacionalidadForm()
-    context = {'lista': lista, 'form': form, 'mensaje':mensaje }
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_nacionalidad.html', context)
+
 
 @login_required
 def editar_nacionalidad(request, id):
     form = NacionalidadForm()
     nacionalidad = get_object_or_404(Nacionalidad, id=id)
-    lista = Nacionalidad.objects.all()
+    lista = Nacionalidad.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = NacionalidadForm(request.POST, instance=nacionalidad)
         if form.is_valid():
             nacionalidad = form.save(commit=False)
             nacionalidad.save()
+            messages.success(request, 'La nacionalidad se editó correctamente.')
             return redirect('crear_nacionalidad')
         else:
+            messages.error(request, 'Error al editar nacionalidad')
             form = NacionalidadForm(instance=nacionalidad)
     if request.method == 'GET':
         form = NacionalidadForm(instance=nacionalidad)
-    context = {'lista': lista, 'form': form, }
+
+    context = {
+        'lista': lista,
+        'form': form,
+    }
     return render(request, './editar_nacionalidad.html', context)
+
 
 @login_required
 def borrar_nacionalidad(request, id):
     nacionalidad = get_object_or_404(Nacionalidad, id=id)
-
-    nacionalidad.is_active=False
+    nacionalidad.is_active = False
     nacionalidad.save()
+    messages.success(request, 'La nacionalidad se eliminó correctamente.')
     return redirect('crear_nacionalidad')
 
-# ------------Nivel de Instruccion-------------------
 
+# ------------Nivel de Instruccion-------------------
 @login_required
 def crear_nivel_instruccion(request):
-    lista = NivelInstruccion.objects.all()
+    lista = NivelInstruccion.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = NivelInstruccionForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = NivelInstruccionForm()
+                messages.success(request, 'El nivel de instrucción se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear nivel de instrucción.')
     else:
         form = NivelInstruccionForm()
-
-    context = {'lista': lista, 'form': form, }
+    context = {
+        'lista': lista,
+        'form': form,
+    }
     return render(request, 'crear_nivel_instruccion.html', context)
+
 
 @login_required
 def editar_nivel_instruccion(request, id):
     form = NivelInstruccionForm()
     nivel_instruccion = get_object_or_404(NivelInstruccion, id=id)
-    lista = NivelInstruccion.objects.all()
+    lista = NivelInstruccion.objects.all().order_by('-is_active')
     if request.method == 'POST':
-        form = NacionalidadForm(request.POST, instance=nivel_instruccion)
+        form = NivelInstruccionForm(request.POST, instance=nivel_instruccion)
         if form.is_valid():
             nivel_instruccion = form.save(commit=False)
             nivel_instruccion.save()
+            messages.success(request, 'El nivel de instrucción se editó correctamente.')
             return redirect('crear_nivel_instruccion')
         else:
+            messages.error(request, 'Error al editar el nivel de instrucción.')
             form = NivelInstruccionForm(instance=nivel_instruccion)
-    context = {'lista': lista, 'form': form, }
+    if request.method == 'GET':
+        form = NivelInstruccionForm(instance=nivel_instruccion)
+
+    context = {
+        'lista': lista,
+        'form': form,
+    }
     return render(request, './editar_nivel_instruccion.html', context)
+
 
 @login_required
 def borrar_nivel_instruccion(request, id):
     nivel_instruccion = get_object_or_404(NivelInstruccion, id=id)
-    nivel_instruccion.delete()
     nivel_instruccion.is_active = False
     nivel_instruccion.save()
+    messages.success(request, 'El nivel de instrucción se eliminó correctamente.')
     return redirect('crear_nivel_instruccion')
+
 
 # ------------Regimen de Tenencia-------------------
 
 @login_required
 def crear_regimen_tenencia(request):
-    lista = RegimenTenencia.objects.all()
+    lista = RegimenTenencia.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = RegimenTenenciaForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = RegimenTenenciaForm()
+                messages.success(request, 'El regimen de tenencia se creó correctamente')
+            except:
+                messages.error(request, 'Error al crear regimen de tenencia.')
     else:
         form = RegimenTenenciaForm()
-    context = {'lista': lista, 'form': form, }
+    context = {
+        'lista': lista,
+        'form': form,
+    }
     return render(request, 'crear_regimen_tenencia.html', context)
+
 
 @login_required
 def editar_regimen_tenencia(request, id):
     form = RegimenTenenciaForm()
     regimen_tenencia = get_object_or_404(RegimenTenencia, id=id)
-    lista = RegimenTenencia.objects.all()
+    lista = RegimenTenencia.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = RegimenTenenciaForm(request.POST, instance=regimen_tenencia)
         if form.is_valid():
             regimen_tenencia = form.save(commit=False)
             regimen_tenencia.save()
+            messages.success(request, 'El regimen de tenencia se editó correctamente.')
             return redirect('crear_regimen_tenencia')
         else:
+            messages.error(request, 'Error al editar el regimen de tenencia')
             form = RegimenTenenciaForm(instance=regimen_tenencia)
+    if request.method == 'GET':
+        form = RegimenTenenciaForm(instance=regimen_tenencia)
     context = {
 
         'lista': lista,
@@ -427,137 +472,204 @@ def editar_regimen_tenencia(request, id):
     }
     return render(request,'./editar_regimen_tenencia.html', context)
 
+
 @login_required
 def borrar_regimen_tenencia(request, id):
     regimen_tenencia = get_object_or_404(RegimenTenencia, id=id)
     regimen_tenencia.is_active = False
     regimen_tenencia.save()
+    messages.success(request, 'El regimen de tenencia se eliminó correctamente.')
     return redirect('crear_regimen_tenencia')
+
 
 # ------------Año de construcción----------------------
 
 @login_required
 def crear_anio_construccion(request):
-    lista = AnioConstruccion.objects.all()
+    lista = AnioConstruccion.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = AnioConstruccionForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = AnioConstruccionForm()
+                messages.success(request, 'El año de construcción se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear año de construcción.')
     else:
         form = RegimenTenenciaForm()
-    context = {'lista': lista, 'form': form }
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_anio_construccion.html', context)
+
 
 @login_required
 def editar_anio_construccion(request, id):
     form = AnioConstruccionForm()
     anio_construccion = get_object_or_404(AnioConstruccion, id=id)
-    lista = AnioConstruccion.objects.all()
+    lista = AnioConstruccion.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = AnioConstruccionForm(request.POST, instance=anio_construccion)
         if form.is_valid():
             anio_construccion= form.save(commit=False)
             anio_construccion.save()
+            messages.success(request, 'El año de construcción se editó correctamente')
             return redirect('crear_anio_construccion')
         else:
+            messages.error(request, 'Error al editar el año de construcción.')
             form = AnioConstruccionForm(instance=anio_construccion)
-    context = {'lista': lista,'form': form,}
-    return render(request,'./editar_anio_construccion.html', context)
+    if request.method == 'GET':
+        form = AnioConstruccionForm(instance=anio_construccion)
+    context = {
+        'lista': lista,
+        'form': form,
+    }
+    return render(request, './editar_anio_construccion.html', context)
+
 
 @login_required
 def borrar_anio_construccion(request, id):
     anio_construccion = get_object_or_404(AnioConstruccion, id=id)
     anio_construccion.is_active = False
     anio_construccion.save()
+    messages.success(request, 'El año de construcción se eliminó correctamente.')
     return redirect('crear_anio_construccion')
+
 
 # -----------Material Estructura-----------------------
 
 @login_required
 def crear_material_estructura(request):
-    lista = MaterialEstructura.objects.all()
+    lista = MaterialEstructura.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = MaterialEstructuraForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = MaterialEstructuraForm()
+                messages.success(request, 'El material de estructura se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear material de estructura.')
+
     else:
         form = MaterialEstructuraForm()
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_material_estructura.html', context)
+
 
 @login_required
 def editar_material_estructura(request, id):
     form = MaterialEstructuraForm()
     material_estructura = get_object_or_404(MaterialEstructura, id=id)
-    lista = MaterialEstructura.objects.all()
+    lista = MaterialEstructura.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = MaterialEstructuraForm(request.POST, instance=material_estructura)
         if form.is_valid():
             material_estructura = form.save(commit=False)
             material_estructura.save()
+            messages.success(request, 'El material de estructura se editó correctamente')
             return redirect('crear_material_estructura')
         else:
+            messages.error(request, 'Error al editar material de estructura')
             form = MaterialEstructuraForm(instance=material_estructura)
+    if request.method == 'GET':
+        form = MaterialEstructuraForm(instance=material_estructura)
     context = {'lista': lista, 'form':form}
     return render(request, './editar_material_estructura.html', context)
+
 
 @login_required
 def borrar_material_estructura(request, id):
     material_estructura = get_object_or_404(MaterialEstructura, id=id)
     material_estructura.is_active=False
     material_estructura.save()
+    messages.success(request, 'El material de estructura se eliminó correctamente')
     return redirect('crear_material_estructura')
 
-# -----------Tipo de Producción -----------------------
 
+# -----------Tipo de Producción -----------------------
 @login_required
 def crear_tipo_produccion(request):
-    lista = TipoProduccion.objects.all()
+    lista = TipoProduccion.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = TipoProduccionForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = TipoProduccionForm()
+                messages.success(request, 'El tipo de producción se creo correctamente.')
+            except:
+                messages.error(request, 'Error al crear tipo de producción')
     else:
         form = TipoProduccionForm()
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_tipo_produccion.html', context)
+
 
 @login_required
 def editar_tipo_produccion(request, id):
     form = TipoProduccionForm()
     tipo_produccion = get_object_or_404(TipoProduccion, id=id)
-    lista = TipoProduccion.objects.all()
+    lista = TipoProduccion.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = TipoProduccionForm(request.POST, instance=tipo_produccion)
         if form.is_valid():
             tipo_produccion = form.save(commit=False)
             tipo_produccion.save()
+            messages.success(request, 'El tipo de producción se editó correctamente.')
             return redirect('crear_tipo_produccion')
         else:
+            messages.error(request, 'Error al editar el tipo de producción.')
             form = TipoProduccionForm(instance=tipo_produccion)
-    context = {'lista': lista, 'form':form}
+    if request.method == 'GET':
+        form = TipoProduccionForm(instance=tipo_produccion)
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, './editar_tipo_produccion.html', context)
+
 
 @login_required
 def borrar_tipo_produccion(request, id):
     tipo_produccion = get_object_or_404(TipoProduccion, id=id)
-    tipo_produccion.delete()
+    tipo_produccion.is_active = False
+    messages.error(request, 'El tipo de producción se eliminó correctamente.')
     return redirect('crear_tipo_produccion')
+
 
 # -----------Eleccion de Cultivo ------------------------
 
 @login_required
 def crear_eleccion_cultivo(request):
-    lista = EleccionCultivo.objects.all()
+    lista = EleccionCultivo.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = EleccionCultivoForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = EleccionCultivoForm()
+                messages.success(request, 'La elección de cultivo se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear elección de cultivo.')
+
     else:
         form = EleccionCultivoForm()
 
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_eleccion_cultivo.html', context)
+
 
 @login_required
 def editar_eleccion_cultivo(request, id):
@@ -569,31 +681,51 @@ def editar_eleccion_cultivo(request, id):
         if form.is_valid():
             eleccion_cultivo = form.save(commit=False)
             eleccion_cultivo.save()
+            messages.success(request, 'La elección de cultivo se editó correctamente.')
             return redirect('crear_eleccion_cultivo')
         else:
+            messages.error(request, 'Error al editar elección de cultivo.')
             form = EleccionCultivoForm(instance=eleccion_cultivo)
-    context = {'lista': lista, 'form': form}
+    if request.method == 'GET':
+        form = EleccionCultivoForm(instance=eleccion_cultivo)
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, './editar_eleccion_cultivo.html', context)
+
 
 @login_required
 def borrar_eleccion_cultivo(request, id):
     eleccion_cultivo = get_object_or_404(EleccionCultivo, id=id)
-    eleccion_cultivo.delete()
+    eleccion_cultivo.is_active = False
+    eleccion_cultivo.save()
+    messages.success(request, 'La elección de cultivo se eliminó correctamente.')
     return redirect('crear_eleccion_cultivo')
+
 
 # -----------Tipo de Cultivo ------------------------
 
 @login_required
 def crear_tipo_cultivo(request):
-    lista = TipoCultivo.objects.all()
+    lista = TipoCultivo.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = TipoCultivoForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = TipoCultivoForm()
+                messages.success(request, 'El tipo de cultivo se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear tipo de cultivo')
     else:
         form = TipoCultivoForm()
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_tipo_cultivo.html', context)
+
 
 @login_required
 def editar_tipo_cultivo(request, id):
@@ -605,32 +737,53 @@ def editar_tipo_cultivo(request, id):
         if form.is_valid():
             tipo_cultivo = form.save(commit=False)
             tipo_cultivo.save()
+            messages.success(request, 'El tipo de cultivo se editó correctamente.')
             return redirect('crear_tipo_cultivo')
         else:
+            messages.error(request, 'Error al editar tipo de cultivo.')
             form = TipoCultivoForm(instance=tipo_cultivo)
-    context = {'lista': lista, 'form': form}
+    if request.method == 'GET':
+        form = TipoCultivoForm(instance=tipo_cultivo)
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, './editar_tipo_cultivo.html', context)
+
 
 @login_required
 def borrar_tipo_cultivo(request, id):
     tipo_cultivo = get_object_or_404(TipoCultivo, id=id)
-    tipo_cultivo.delete()
+    tipo_cultivo.is_active = False
+    tipo_cultivo.save()
+    messages.success(request, 'El tipo de cultivo se eliminó correctamente')
     return redirect('crear_tipo_cultivo')
 
 # ------------------Especie ----------------------------
 
+
 @login_required
 def crear_especie(request):
-    lista = Especie.objects.all()
+    lista = Especie.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = EspecieForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = EspecieForm()
+                messages.success(request, 'La especie se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear la especie.')
     else:
         form = EspecieForm()
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_especie.html', context)
 
+
+@login_required
 def editar_especie(request, id):
     form = EspecieForm()
     especie = get_object_or_404(Especie, id=id)
@@ -640,31 +793,51 @@ def editar_especie(request, id):
         if form.is_valid():
             especie = form.save(commit=False)
             especie.save()
+            messages.success(request, 'La especie se editó correctamente.')
             return redirect('crear_especie')
         else:
+            messages.error(request, 'Error al editar la especie.')
             form = EspecieForm(instance=especie)
-    context = {'lista': lista, 'form': form}
+    if request.method == 'GET':
+        form = EspecieForm(instance=especie)
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, './editar_especie.html', context)
 
+
+@login_required
 def borrar_especie(request, id):
     especie = get_object_or_404(Especie, id=id)
-    especie.delete()
+    especie.is_active = False
+    especie.save()
+    messages.success(request, 'La especie se eliminó correctamente.')
     return redirect('crear_especie')
 
-# ----------------Factor Climático-----------------------
 
+# ----------------Factor Climático-----------------------
 @login_required
 def crear_factor_climatico(request):
     lista = FactorClimatico.objects.all()
     if request.method == 'POST':
         form = FactorClimaticoForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = FactorClimaticoForm()
+                messages.success(request, 'El factor climático se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear el factor climático.')
     else:
         form = FactorClimaticoForm()
 
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_factor_climatico.html', context)
+
 
 @login_required
 def editar_factor_climatico(request, id):
@@ -676,31 +849,50 @@ def editar_factor_climatico(request, id):
         if form.is_valid():
             factor_climatico = form.save(commit=False)
             factor_climatico.save()
+            messages.success(request, 'El factor climático se editó correctamente')
             return redirect('crear_factor_climatico')
         else:
+            messages.error(request, 'Error al editar el factor climático')
             form = EspecieForm(instance=factor_climatico)
-    context = {'lista': lista, 'form': form}
+    if request.method == 'GET':
+        form = EspecieForm(instance=factor_climatico)
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, './editar_factor_climatico.html', context)
+
 
 @login_required
 def borrar_factor_climatico(request, id):
     factor_climatico= get_object_or_404(FactorClimatico, id=id)
-    factor_climatico.delete()
+    factor_climatico.is_active = False
+    factor_climatico.save()
+    messages.success(request, 'El factor climático se eliminó correctamente')
     return redirect('crear_factor_climatico')
 
-# ----------------Triple Lavado-----------------------
 
+# ----------------Triple Lavado-----------------------
 @login_required
 def crear_triple_lavado(request):
-    lista = TripleLavado.objects.all()
+    lista = TripleLavado.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = TripleLavadoForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = TripleLavadoForm()
+                messages.success(request, 'El triple lavado se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear el triple lavado.')
     else:
         form = TripleLavadoForm()
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_triple_lavado.html', context)
+
 
 @login_required
 def editar_triple_lavado(request, id):
@@ -712,32 +904,52 @@ def editar_triple_lavado(request, id):
         if form.is_valid():
             triple_lavado = form.save(commit=False)
             triple_lavado.save()
+            messages.success(request, 'El triple lavado se editó correctamente.')
             return redirect('crear_triple_lavado')
         else:
+            messages.error(request, 'Error al editar el triple lavado.')
             form = TripleLavadoForm(instance=triple_lavado)
-    context = {'lista': lista, 'form': form}
+    if request.method == 'GET':
+        form = TripleLavadoForm(instance=triple_lavado)
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, './editar_triple_lavado.html', context)
+
 
 @login_required
 def borrar_triple_lavado(request, id):
     triple_lavado= get_object_or_404(TripleLavado, id=id)
-    triple_lavado.delete()
+    triple_lavado.is_active = False
+    triple_lavado.save()
+    messages.success(request, 'El triple lavado se eliminó correctamente.')
     return redirect('crear_triple_lavado')
+
 
 # ----------------Asesoramiento-----------------------
 
 @login_required
 def crear_asesoramiento(request):
-    lista = Asesoramiento.objects.all()
+    lista = Asesoramiento.objects.all().order_by('-is_active')
     if request.method == 'POST':
         form = AsesoramientoForm(request.POST)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+                form = AsesoramientoForm()
+                messages.success(request, 'El asesoramiento se creó correctamente.')
+            except:
+                messages.error(request, 'Error al crear el asesoramiento.')
     else:
         form = AsesoramientoForm()
 
-    context = {'lista': lista, 'form': form}
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, 'crear_asesoramiento.html', context)
+
 
 @login_required
 def editar_asesoramiento(request, id):
@@ -749,18 +961,27 @@ def editar_asesoramiento(request, id):
         if form.is_valid():
             asesoramiento = form.save(commit=False)
             asesoramiento.save()
+            messages.success(request, 'El asesoramiento se editó correctamente')
             return redirect('crear_asesoramiento')
         else:
+            messages.error(request, 'Error al editar el asesoramiento.')
             form = AsesoramientoForm(instance=asesoramiento)
-    context = {'lista': lista, 'form': form}
+    if request.method == 'GET':
+        form = AsesoramientoForm(instance=asesoramiento)
+    context = {
+        'lista': lista,
+        'form': form
+    }
     return render(request, './editar_asesoramiento.html', context)
+
 
 @login_required
 def borrar_asesoramiento(request, id):
     asesoramiento = get_object_or_404(Asesoramiento, id=id)
-    asesoramiento.delete()
+    asesoramiento.is_active = False
+    asesoramiento.save()
+    messages.success(request, 'El asesoramiento se eliminó correctamente')
     return redirect('crear_asesoramiento')
-
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -802,6 +1023,18 @@ def UpdatesPosteriores(request,last_update):
     else:
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+def updates_from_mobile(request):
+    """
+    API endpoint que recibe las actualizaciones desde el movil
+    """
+    if request.method == 'POST':
+        update = UpdatesFromMobileSerializer(data=request.data)
+        if update.is_valid():
+            update.save()
+            return Response(update.data,status = status.HTTP_201_CREATED)
+        return Response(update.errors, status = status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET'])
 def lastUpdate(request):
     """
@@ -814,78 +1047,151 @@ def lastUpdate(request):
     else:
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
-class EncuestadoViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_encuestado(request):
     """
     API endpoint que Lista todos los encuestados o Crea nuevos
     """
+    if request.method == 'GET':
+        encuestados = Encuestado.objects.all()
+        serializer = EncuestadoSerializer(encuestados,many=True)
+        return Response(serializer.data)
+    elif request.metho == 'POST':
+        encuestado = EncuestadoSerializer(data = request.data)
+        if encuestado.is_valid():
+            encuestado.save(cread = date.today())
+            return Response(encuestado.data, status = status.HTTP_201_CREATED)
+        return Response(encuestado.errors, status = status.HTTP_400_BAD_REQUEST)
 
-    queryset = Encuestado.objects.all()
-    serializer_class = EncuestadoSerializer
 
-
-
-class EstablecimientoViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_establecimiento(request):
+    #  class EstablecimientoViewSet(viewsets.ModelViewSet):
     """
     API endpoint que lista todos los establecimientos o crea nuevos
     """
-    queryset = Establecimiento.objects.all()
-    serializer_class = EstablecimientoSerializer
+
+    if request.method == "GET":
+        establecimientos = Establecimiento.objects.all()
+        serializer = EstablecimientoSerializer(establecimientos,many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        establecimiento = EstablecimientoSerializer(data = request.data)
+        if establecimiento.is_valid():
+            establecimiento.save(creado = date.today())
+            return Response(establecimiento.data,status= status.HTTP_201_CREATED)
+        return Response(establecimiento.errors,status= status.HTTP_400_BAD_REQUEST)
+#    queryset = Establecimiento.objects.all()
+#    serializer_class = EstablecimientoSerializer
+
 
 class RegimenTenenciaViewSet(viewsets.ModelViewSet):
 
     queryset = RegimenTenencia.objects.all()
     serializer_class = RegimenTenenciaSerializer
 
-class FamiliaViewSet(viewsets.ModelViewSet):
+
+@api_view(['GET','POST'])
+def sincro_familia(request):
     """
     API endpoint que lista todos los registros de familia
     o crea un nuevo registro en la base de datos
     """
-    queryset = Familia.objects.all()
-    serializer_class = FamiliaSerializer
+    if request.method == 'GET':
+        familias = Familia.objects.all()
+        serializer = FamiliaSerializer(familias,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        familia = FamiliaSerializer(data = request.data)
+        if familia.is_valid():
+            familia.save(creado = date.today())
+            return Response(familia.data, status = status.HTTP_201_CREATED)
+        return Response(familia.errors, status = status.HTTP_400_BAD_REQUEST)
 
 
-class AgroquimicoViewSet(viewsets.ModelViewSet):
+@api_view(['GET','POST','PUT'])
+def sincro_agroquimico(request):
     """
     API endpoint que lista todos los registros de agroquimicos
     o crea un nuevo registro en la base de datos
     """
-    queryset = Agroquimico.objects.all()
-    serializer_class = AgroquimicoSerializer
+    if request.method == 'GET':
+        agroquimicos = Agroquimico.objects.all()
+        serializer = AgroquimicoSerializer(agroquimicos,many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        agroquimico = AgroquimicoSerializer(request.data)
+        if agroquimico.is_valid():
+            agroquimico.save(creado = date.today())
+            return Response(agroquimico.data, status = status.HTTP_201_CREATED)
+        return Response(agroquimico.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 class NacionalidadViewSet(viewsets.ModelViewSet):
 
     queryset = Nacionalidad.objects.all()
     serializer_class = NacionalidadSerializer
 
+
 class NivelInstruccionViewSet(viewsets.ModelViewSet):
 
     queryset = NivelInstruccion.objects.all()
     serializer_class = NivelInstruccionSerializer
+
 
 class FactorClimaticoViewSet(viewsets.ModelViewSet):
 
     queryset = FactorClimatico.objects.all()
     serializer_class = FactorClimaticoSerializer
 
+
 class TripleLavadoViewSet(viewsets.ModelViewSet):
 
     queryset = TripleLavado.objects.all()
     serializer_class = TripleLavadoSerializer
+
 
 class AsesoramientoViewSet(viewsets.ModelViewSet):
 
     queryset = Asesoramiento.objects.all()
     serializer_class = AsesoramientoSerializer
 
-class EncuestaViewSet(viewsets.ModelViewSet):
 
-    queryset = Encuesta.objects.all()
-    serializer_class = EncuestaSerializer
+@api_view(['GET','POST','PUT'])
+def sincro_encuesta(request):
+    """
+    API Endpoint que permite listar todas las encuestas
+    o crear nuevas encuestas
+    """
+    if request.method == 'GET':
+        encuestas = Encuesta.objects.all()
+        serializer = EncuestaSerializer(encuestas, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        encuesta = EncuestaSerializer(data = request.data)
+        if encuesta.is_valid():
+            encuesta.save(creado = date.today())
+            return Response(encuesta.data, status = status.HTTP_201_CREATED)
+        return Response(encuesta.errors, status = status.HTTP_400_BAD_REQUEST)
 
-class InvernaculoViewSet(viewsets.ModelViewSet):
-    queryset = Invernaculo.objects.all()
-    serializer_class = InvernaculoSerializer
+
+@api_view(['GET','POST','PUT'])
+def sincro_invernaculo(request):
+    """
+    API Endpoint que permite listar todos los invernaculos
+    o crear nuevos invernaculos
+    """
+    if request.method == 'GET':
+        invernaculos = Invernaculo.objects.all()
+        serializer = InvernaculoSerializer(invernaculos, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        invernaculo = InvernaculoSerializer(data = request.data)
+        if invernaculo.is_valid():
+            invernaculo.save(creado = date.today())
+            return Response(invernaculo.data, status = status.HTTP_201_CREATED)
+        return Response(invernaculo.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 class MaterialEstructuraViewSet(viewsets.ModelViewSet):
     queryset = MaterialEstructura.objects.all()
@@ -896,26 +1202,60 @@ class AnioConstruccionViewSet(viewsets.ModelViewSet):
     queryset = AnioConstruccion.objects.all()
     serializer_class = AnioConstruccionSerializer
 
-class CultivosViewSet(viewsets.ModelViewSet):
-    queryset = Cultivo.objects.all()
-    serializer_class = CultivoSerializer
+
+@api_view(['GET','POST','PUT'])
+def sincro_cultivo(request):
+    """
+    API Endpoint que permite listar todos los cultivos
+    o crear nuevos cultivos
+    """
+    if request.method == 'GET':
+        cultivos = Cultivo.objects.all()
+        serializer = CultivoSerializer(cultivos, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        cultivo = CultivoSerializer(data = request.data)
+        if cultivo.is_valid():
+            cultivo.save(creado = date.today())
+            return Response(cultivo.data, status = status.HTTP_201_CREATED)
+        return Response(cultivo.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 class EspecieViewSet(viewsets.ModelViewSet):
     queryset = Especie.objects.all()
     serializer_class = EspecieSerializer
 
+
 class TipoCultivoViewSet(viewsets.ModelViewSet):
     queryset = TipoCultivo.objects.all()
     serializer_class = TipoCultivoSerializer
+
 
 class TipoProduccionViewSet(viewsets.ModelViewSet):
     queryset = TipoProduccion.objects.all()
     serializer_class = TipoProduccionSerializer
 
+
 class EleccionCultivoViewSet(viewsets.ModelViewSet):
     queryset = EleccionCultivo.objects.all()
     serializer_class = EleccionCultivoSerializer
 
-class AgroquimicoUsadoViewSet(viewsets.ModelViewSet):
+
+@api_view(['GET','POST','PUT'])
+def sincro_agroquimico_usado(request):
+    """
+    API Endpoint que permite listar todos los Agroquimicos usados
+    o crear nuevos Agroquimicos usados
+    """
+    if request.method == 'GET':
+        agroquimico_usados = AgroquimicoUsado.objects.all()
+        serializer = AgroquimicoUsadoSerializer(agroquimico_usados, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        agroquimico_usado = AgroquimicoUsadoSerializer(data = request.data)
+        if agroquimico_usado.is_valid():
+            agroquimico_usado.save(creado = date.today())
+            return Response(agroquimico_usado.data, status = status.HTTP_201_CREATED)
+        return Response(agroquimico_usado.errors, status = status.HTTP_400_BAD_REQUEST)
     queryset = AgroquimicoUsado.objects.all()
     serializer_class = AgroquimicoUsadoSerializer

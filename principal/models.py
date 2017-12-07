@@ -2,6 +2,10 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+<<<<<<< HEAD
+=======
+#from geoposition.fields import GeopositionField
+>>>>>>> 29bdc017054ab6e07546ebd1152b0d7250c57922
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
 
@@ -158,8 +162,8 @@ class Encuestado(models.Model):
 class Familia(models.Model):
 	esCasado 	= models.BooleanField()
 	tieneHijos 	= models.BooleanField()
-	cantVarones = models.IntegerField()
-	cantMujeres = models.IntegerField()
+	cantVarones = models.IntegerField(default=0)
+	cantMujeres = models.IntegerField(default=0)
 	creado		= models.DateField(default=None,null=True,blank=True)
 	modificado	= models.DateField(default=None,null=True,blank=True)
 	eliminado 	= models.DateField(default=None,null=True,blank=True)
@@ -209,19 +213,21 @@ class Invernaculo(models.Model):
 		db_table = 'invernaculo'
 
 class Cultivo(models.Model):
-	encuesta 		= models.ForeignKey('Encuesta')
-	especie 		= models.ForeignKey('Especie')
-	tipo 			= models.ForeignKey('TipoCultivo')
-	nroSiembra 		= models.IntegerField()
-	mesSiembra 		= models.IntegerField()
-	surcos 			= models.IntegerField()
-	distancias 		= models.IntegerField()
-	largo 			= models.IntegerField()
-	tipoProducion 	= models.ForeignKey('TipoProduccion')
-	eleccionCultivo = models.ForeignKey('EleccionCultivo')
-	creado			= models.DateField(default=None,null=True,blank=True)
-	modificado 		= models.DateField(default=None,null=True,blank=True)
-	eliminado 		= models.DateField(default=None,null=True,blank=True)
+	encuesta 			= models.ForeignKey('Encuesta')
+	especie 			= models.ForeignKey('Especie')
+	tipo 				= models.ForeignKey('TipoCultivo')
+	nroSiembra 			= models.IntegerField()
+	mesSiembra 			= models.IntegerField()
+	surcos 				= models.IntegerField()
+	distancias 			= models.IntegerField()
+	largo 				= models.IntegerField()
+	tipoProducion 		= models.ForeignKey('TipoProduccion')
+	eleccionCultivo 	= models.ForeignKey('EleccionCultivo')
+	eleccionEspecificar	= models.CharField(max_length=50,blank=True,null=True,default="")
+	especieNueva		= models.CharField(max_length=50,default="",blank=True,null=True)
+	creado				= models.DateField(default=None,null=True,blank=True)
+	modificado 			= models.DateField(default=None,null=True,blank=True)
+	eliminado 			= models.DateField(default=None,null=True,blank=True)
 
 	class Meta:
 		db_table = 'cultivo'
@@ -246,6 +252,11 @@ class Updates(models.Model):
 
 	class Meta:
 		db_table = 'updates'
+
+
+class UpdatesFromMobile(Updates):
+	usuario = models.ForeignKey('Usuario')
+			
 
 SENDER_OPTIONS = ('Asesoramiento','TripleLavado','FactorClimatico',
 				  'Especie','TipoCultivo','EleccionCultivo','TipoProduccion',
