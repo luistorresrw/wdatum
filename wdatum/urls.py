@@ -41,4 +41,5 @@ urlpatterns = [
     url(r'^api/sincro_invernaculo/$',views.sincro_invernaculo),
     url(r'^api/sincro_cultivo/$',views.sincro_cultivo),
     url(r'^api/sincro_agroquimico_usado/$',views.sincro_agroquimico_usado),
+    url(r'^api/get_ids_by_transaccion/(?P<transaccion>[0-9A-Za-z-]+)/$',views.get_ids_by_transaccion),
 ]

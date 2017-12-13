@@ -1056,10 +1056,10 @@ def sincro_encuestado(request):
         encuestados = Encuestado.objects.all()
         serializer = EncuestadoSerializer(encuestados,many=True)
         return Response(serializer.data)
-    elif request.metho == 'POST':
+    elif request.method == 'POST':
         encuestado = EncuestadoSerializer(data = request.data)
         if encuestado.is_valid():
-            encuestado.save(cread = date.today())
+            encuestado.save(creado = date.today())
             return Response(encuestado.data, status = status.HTTP_201_CREATED)
         return Response(encuestado.errors, status = status.HTTP_400_BAD_REQUEST)
 
@@ -1080,6 +1080,7 @@ def sincro_establecimiento(request):
         if establecimiento.is_valid():
             establecimiento.save(creado = date.today())
             return Response(establecimiento.data,status= status.HTTP_201_CREATED)
+        print establecimiento.errors
         return Response(establecimiento.errors,status= status.HTTP_400_BAD_REQUEST)
 #    queryset = Establecimiento.objects.all()
 #    serializer_class = EstablecimientoSerializer
@@ -1120,7 +1121,7 @@ def sincro_agroquimico(request):
         serializer = AgroquimicoSerializer(agroquimicos,many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
-        agroquimico = AgroquimicoSerializer(request.data)
+        agroquimico = AgroquimicoSerializer(data = request.data)
         if agroquimico.is_valid():
             agroquimico.save(creado = date.today())
             return Response(agroquimico.data, status = status.HTTP_201_CREATED)
@@ -1170,9 +1171,16 @@ def sincro_encuesta(request):
     elif request.method == 'POST':
         encuesta = EncuestaSerializer(data = request.data)
         if encuesta.is_valid():
+            #transaccion = encuesta.validated_data['transaccion']
+            #encuestado = Encuestado.objects.get(transaccion = transaccion)
+            #establecimiento = Establecimiento.objects.get(transaccion = transaccion)
+            #agroquimico = Agroquimicos.objects.get(transaccion = transaccion)
+            #familia = Familia.objects.get(transaccion = transaccion )
+
             encuesta.save(creado = date.today())
             return Response(encuesta.data, status = status.HTTP_201_CREATED)
-        return Response(encuesta.errors, status = status.HTTP_400_BAD_REQUEST)
+        print encuesta.errors
+        return Response(encuesta.errors,status = status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET','POST','PUT'])
@@ -1259,3 +1267,31 @@ def sincro_agroquimico_usado(request):
         return Response(agroquimico_usado.errors, status = status.HTTP_400_BAD_REQUEST)
     queryset = AgroquimicoUsado.objects.all()
     serializer_class = AgroquimicoUsadoSerializer
+
+
+@api_view(['GET'])
+def get_ids_by_transaccion(request,transaccion):
+
+    if request.method == 'GET':
+        establecimiento = Establecimiento.objects.get(transaccion = transaccion)
+        encuestado      = Encuestado.objects.get(transaccion = transaccion)
+        try:
+            familia         = Familia.objects.get(transaccion = transaccion)
+        except:
+            familia = Familia()
+        try:    
+            agroquimico     = Agroquimico.objects.get(transaccion = idsTransaccion)
+        except:
+            agroquimico = Agroquimico()
+
+        ids = {
+            'establecimiento':establecimiento.id,
+            'encuestado':encuestado.id,
+            'familia':familia.id,
+            'agroquimico':agroquimico.id
+        }
+
+        idsTransaccion = IdsTransaccionSerializer(ids)
+        return Response(idsTransaccion.data,status = status.HTTP_200_OK)
+
+    return Response(status = status.HTTP_400_BAD_REQUEST)

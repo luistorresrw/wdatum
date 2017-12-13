@@ -148,3 +148,10 @@ class AgroquimicoUsadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = AgroquimicoUsado
         fields = '__all__'
+
+class IdsTransaccionSerializer(serializers.Serializer):
+
+    establecimiento = serializers.IntegerField()
+    encuestado      = serializers.IntegerField()
+    familia         = serializers.IntegerField()
+    agroquimico     = serializers.IntegerField()
