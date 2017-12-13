@@ -2,10 +2,9 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
-<<<<<<< HEAD
-=======
+
 #from geoposition.fields import GeopositionField
->>>>>>> 29bdc017054ab6e07546ebd1152b0d7250c57922
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
 
