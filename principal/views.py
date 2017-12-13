@@ -108,7 +108,6 @@ def query_to_str(queryset,especie):
 
 
 
-
 def login(request):
     request.session.flush()
     if request.user.is_authenticated():  # si el usuario esta autenticado redirecciona a la pagina principal
@@ -116,6 +115,7 @@ def login(request):
     form = LoginForm()  # declaramos una variable que reciba los campos del formulario
     mensaje = ''  # declaramos una variable con un mensaje vacio
     user = None  # declaro la variable user a None
+
     if request.method == 'POST':  # validamos que los datos vengan por Post
         form = LoginForm(request.POST)# le pasamos el request a loginForm
         if form.is_valid():  # verificamos que el formato de los datos sea correcto
@@ -207,7 +207,7 @@ def recuperar_password(request):
     }
     return render(request, 'recuperar_password.html', context)
 
-
+@login_required
 def principal(request):
     lista = Establecimiento.objects.all()
     context = {
@@ -215,7 +215,7 @@ def principal(request):
     }
     return render(request, 'principal.html', context)
 
-
+@login_required
 def obtener_puntos(request):
     puntos = Establecimiento.objects.all()
     data = serializers.serialize("json",puntos)
@@ -286,7 +286,7 @@ def editar_usuario(request, id):
             usuario.last_name = form.cleaned_data['last_name']
             usuario.dni = form.cleaned_data['dni']
             usuario.rol = form.cleaned_data['rol']
-            usuario.is_active = form.cleaned_data['is_active']
+            usuario.is_active = True
             usuario.save()
             messages.success(request, 'El usuario se editó correctamente.')
             return redirect('crear_usuario')
@@ -309,6 +309,14 @@ def borrar_usuario(request, id):
     usuario.is_active = False
     usuario.save()
     messages.success(request, 'El usuario se eliminó correctamente.')
+    return redirect('crear_usuario')
+
+@login_required
+def activar_usuario(request, id):
+    usuario = get_object_or_404(Usuario, id=id)
+    usuario.is_active = True
+    usuario.save()
+    messages.success(request, 'El usuario se activo correctamente.')
     return redirect('crear_usuario')
 
 # ---------------Nacionalidad---------------------#

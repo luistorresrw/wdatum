@@ -74,8 +74,12 @@
 			                </td>
 			               	<td>{{elemento.rol}}</td>
 			               	<td>
+								{% if elemento.is_active %}
 			            		<a href="{% url 'editar_usuario' elemento.id %}"><i class="material-icons">edit</i> </a>
-			                	<a href="{% url 'borrar_usuario' elemento.id %}"> <i class="material-icons">delete</i></a>
+			                	{% else %}
+								<a href="{% url 'activar_usuario' elemento.id %}"><i class="material-icons">check</i> </a>
+								{% endif %}
+								<a href="{% url 'borrar_usuario' elemento.id %}"> <i class="material-icons">delete</i></a>
 			            	</td>
 			          	</tr>
 	          		{% endfor %}

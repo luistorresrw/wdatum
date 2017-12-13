@@ -22,10 +22,10 @@
 
         <script type="text/javascript" src="{% static 'scripts.js' %}"></script>
  	</head>
- 	<body>
- 		<div class="navbar-fixed">
+ 	<body >
 
- 			<ul id="dropdown1" class="dropdown-content">
+
+			<ul id="dropdown1" class="dropdown-content">
 				<li><a href="{% url 'crear_usuario' %}">Usuario</a></li>
 				<li class="divider"></li>
 				<li><a href="{% url 'crear_nacionalidad' %}">Nacionalidad</a></li>
@@ -52,45 +52,73 @@
                 <li class="divider"></li>
 				<li><a href="{% url 'crear_asesoramiento' %}">Asesoramiento</a></li>
 			</ul>
-			<ul id="dropdown1" class="dropdown-content">
+			<ul id="dropdown2" class="dropdown-content">
 				<li><a href="{% url 'cambiar_password' %}">Cambiar contraseña</a></li>
 				<li class="divider"></li>
 				<li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-			</ul>	
+			</ul>
+            <ul id="dropdown3" class="dropdown-content">
+				<li><a href="{% url 'crear_usuario' %}">Usuario</a></li>
+				<li class="divider"></li>
+				<li><a href="{% url 'crear_nacionalidad' %}">Nacionalidad</a></li>
+				<li class="divider"></li>
+				<li><a href="{% url 'crear_nivel_instruccion' %}">Nivel de Instrucción</a></li>
+				<li class="divider"></li>
+				<li><a href="{% url 'crear_regimen_tenencia' %}">Regimen de Tenencia</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_anio_construccion' %}">Año de Construcción</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_material_estructura' %}">Material de la Estructura</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_tipo_produccion' %}">Tipo de Producción</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_eleccion_cultivo' %}">Eleccion de Cultivo</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_tipo_cultivo' %}">Tipo de Cultivo</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_especie' %}">Especie</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_factor_climatico' %}">Factor Climático</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_triple_lavado' %}">Triple Lavado</a></li>
+                <li class="divider"></li>
+				<li><a href="{% url 'crear_asesoramiento' %}">Asesoramiento</a></li>
+			</ul>
+			<ul id="dropdown4" class="dropdown-content">
+				<li><a href="{% url 'cambiar_password' %}">Cambiar contraseña</a></li>
+				<li class="divider"></li>
+				<li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+			</ul>
 	 		<nav>
 			    <div class="nav-wrapper  light-green">
-			    	<div class="container">
+                    <div class="container">
+                        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 			    		<img src="{% static 'img/logo_agro.png' %}" style="max-width: 55px; max-height: 55px">
 			    		<a href="{% url 'principal' %}" class="brand-logo"> W-datum</a>
-			    		{% if user.is_authenticated %} 
-			    		<ul id="nav-mobile" class="right hide-on-med-and-down">
+			    		{% if user.is_authenticated %}
+			    		<ul class="right hide-on-med-and-down">
 							<li><a href="{% url 'exportar_xls' %}">Exportar encuestas<i class="material-icons right">description</i></a></li>
 				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administración<i class="material-icons right">view_list</i></a></li>
-			    			
-				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Menú<i class="material-icons right">settings_applications</i></a></li>
+			    			<li><a class="dropdown-button" href="#!" data-activates="dropdown2">Menú<i class="material-icons right">settings_applications</i></a></li>
 			    		</ul>
+                        <ul class="side-nav" id="mobile-demo">
+                            <li><a href="{% url 'exportar_xls' %}">Exportar encuestas<i class="material-icons right">description</i></a></li>
+				    		<li><a class="dropdown-button" href="#!" data-activates="dropdown3">Administración<i class="material-icons right">view_list</i></a></li>
+			    			<li><a class="dropdown-button" href="#!" data-activates="dropdown4">Menú<i class="material-icons right">settings_applications</i></a></li>
+                        </ul>
 			    		{% endif %}
-			    	</div>	
-			    </div>
-
+			        </div>
+                </div>
 			</nav>
- 		</div>
+
+
+
+
  			{% block content %}
 
+
  			{% endblock %}
- 			
 
- 	<!--
-        <footer class="page-footer  light-green">
-          <div class="footer-copyright">
-            <div class="container">
-            © 2017 powered by VTN Software 
-            </div>
-          </div>
-        </footer>
-    -->        
-
-  		
  	</body>
 </html>
 
