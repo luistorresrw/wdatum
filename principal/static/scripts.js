@@ -1,8 +1,8 @@
 function initMap() {
-	var map = new google.maps.Map(document.getElementById('map'), {
+	var map = new google.maps.Map(document.getElementById('map'),{
 	   	zoom: 7,
 	    center: {lat: -43.980198, lng: -68.275580 },
-	    mapTypeId: google.maps.MapTypeId.SATELLITE,  
+	    mapTypeId: google.maps.MapTypeId.SATELLITE,
 	});
 	var markers = []
 	var url = '/obtener_puntos/';
@@ -37,5 +37,8 @@ function initMap() {
 //------------------------Script que acciona el select------------------------
 $(document).ready(function() {
 	$('select').material_select();
+	$(".button-collapse").sideNav();
+
 });
-  
+
+

@@ -2,7 +2,9 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+
 #from geoposition.fields import GeopositionField
+
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save
 
@@ -17,7 +19,7 @@ class Usuario(User):
 
 class Nacionalidad(models.Model):
 	descripcion = models.CharField(max_length=50)
-	is_active = models.BooleanField(default=True)
+	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
@@ -26,7 +28,7 @@ class Nacionalidad(models.Model):
 
 class NivelInstruccion(models.Model):
 	descripcion = models.CharField(max_length=50)
-	is_active = models.BooleanField(default=True)
+	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
@@ -35,7 +37,7 @@ class NivelInstruccion(models.Model):
 
 class RegimenTenencia(models.Model):
 	descripcion = models.CharField(max_length=50)
-	is_active = models.BooleanField(default=True)
+	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
@@ -44,7 +46,7 @@ class RegimenTenencia(models.Model):
 
 class AnioConstruccion(models.Model):
 	descripcion = models.CharField(max_length=50)
-	is_active = models.BooleanField(default=True)
+	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
@@ -53,7 +55,7 @@ class AnioConstruccion(models.Model):
 
 class MaterialEstructura(models.Model):
 	descripcion = models.CharField(max_length=50)
-	is_active = models.BooleanField(default=True)
+	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
@@ -62,7 +64,7 @@ class MaterialEstructura(models.Model):
 
 class TipoProduccion(models.Model):
 	descripcion = models.CharField(max_length=50)
-	is_active = models.BooleanField(default=True)
+	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
@@ -71,7 +73,7 @@ class TipoProduccion(models.Model):
 
 class EleccionCultivo(models.Model):
 	descripcion = models.CharField(max_length=50)
-	is_active = models.BooleanField(default=True)
+	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
 
@@ -134,6 +136,8 @@ class Establecimiento(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
+	transaccion 		= models.CharField(max_length=50,default=None)
+
 
 	def __str__(self):
 		return u'%s' % self.nombre
@@ -152,6 +156,7 @@ class Encuestado(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
+	transaccion 		= models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'encuestado'
@@ -164,6 +169,7 @@ class Familia(models.Model):
 	creado		= models.DateField(default=None,null=True,blank=True)
 	modificado	= models.DateField(default=None,null=True,blank=True)
 	eliminado 	= models.DateField(default=None,null=True,blank=True)
+	transaccion = models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'familia'
@@ -173,10 +179,11 @@ class Agroquimico(models.Model):
 	factorClimatico 	= models.ForeignKey('FactorClimatico')
 	tripleLavado 		= models.ForeignKey('TripleLavado')
 	asesoramiento 		= models.ForeignKey('Asesoramiento')
-	asesoramientoOtro 	= models.CharField(max_length=50)
+	asesoramientoOtro 	= models.CharField(max_length=50,blank=True,null=True)
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
+	transaccion 		= models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'agroquimico'
@@ -188,10 +195,11 @@ class Encuesta(models.Model):
 	encuestado 		= models.OneToOneField('Encuestado')
 	familia 		= models.OneToOneField('Familia',null=True,blank=True)
 	agroquimico 	= models.OneToOneField('Agroquimico',null=True,blank=True)
-	usuario 		= models.OneToOneField('Usuario')
+	usuario 		= models.ForeignKey('Usuario')
 	creado 			= models.DateField(default=None,null=True,blank=True)
 	modificado 		= models.DateField(default=None,null=True,blank=True)
 	eliminado 		= models.DateField(default=None,null=True,blank=True)
+	transaccion 	= models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'encuesta'
@@ -205,6 +213,7 @@ class Invernaculo(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
+	transaccion 		= models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'invernaculo'
@@ -225,6 +234,7 @@ class Cultivo(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
+	transaccion 		= models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'cultivo'
@@ -238,6 +248,7 @@ class AgroquimicoUsado(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
+	transaccion 		= models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'agroquimico_usado'
@@ -253,6 +264,7 @@ class Updates(models.Model):
 
 class UpdatesFromMobile(Updates):
 	usuario = models.ForeignKey('Usuario')
+
 			
 
 SENDER_OPTIONS = ('Asesoramiento','TripleLavado','FactorClimatico',

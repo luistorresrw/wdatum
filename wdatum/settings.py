@@ -14,7 +14,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','192.168.1.37','192.168.1.41','127.0.0.1','192.168.2.194','172.16.253.93','192.168.0.107']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -76,6 +75,19 @@ WSGI_APPLICATION = 'wdatum.wsgi.application'
 
 DATABASES = {
 
+<<<<<<< HEAD
+      'default': {
+          'ENGINE': 'django.db.backends.mysql',
+          'NAME': 'mdatum',
+          'USER': 'root',
+          'PASSWORD': '123456',
+          'HOST': '',
+      }
+    #'default': {
+    #   'ENGINE': 'django.db.backends.sqlite3',
+    #   'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
+=======
      # 'default': {
      #     'ENGINE': 'django.db.backends.mysql',
      #     'NAME': 'mdatum',
@@ -84,9 +96,14 @@ DATABASES = {
      #     'HOST': '',
      # }
     'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+
+
     }
+>>>>>>> 872b262610fed1578751abebe2b47b7c801ef991
 }
 
 # Password validation
@@ -129,7 +146,9 @@ STATIC_URL = '/static/'
 
 
 
+
 #GEOPOSITION_GOOGLE_MAPS_API_KEY =  'AIzaSyDkKy8gqIij-B-wdd3tFe2kLIA1zRlCtQo'
+
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'mdatumudc@gmail.com'
@@ -137,3 +156,5 @@ EMAIL_HOST_PASSWORD = 'mdat1234'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'mdatumudc@gmail.com'
+
+LOGIN_URL = '/'

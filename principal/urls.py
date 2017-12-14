@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^crear_usuario/$', views.crear_usuario, name='crear_usuario'),
     url(r'^(?P<id>\d+)/editar_usuario$', views.editar_usuario, name='editar_usuario'),
     url(r'^(?P<id>\d+)/borrar_usuario$', views.borrar_usuario, name='borrar_usuario'),
+    url(r'^(?P<id>\d+)/activar_usuario$', views.activar_usuario, name='activar_usuario'),
 
     url(r'^crear_nacionalidad/$', views.crear_nacionalidad, name='crear_nacionalidad'),
     url(r'^(?P<id>\d+)/editar_nacionalidad$',views.editar_nacionalidad, name='editar_nacionalidad'),
