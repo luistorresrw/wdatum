@@ -33,8 +33,13 @@
 		            	<td>{{elemento.id}}</td>
 		            	<td>{{elemento.descripcion}}</td>
 		            	<td>
-		            		<a href="{% url 'editar_regimen_tenencia' elemento.id %}"><i class="material-icons">edit</i> </a>
-		                	<a href="{% url 'borrar_regimen_tenencia' elemento.id %}"> <i class="material-icons">delete</i></a>
+
+		            		{% if elemento.is_active %}
+		            			<a href="{% url 'editar_regimen_tenencia' elemento.id %}"><i class="material-icons">edit</i> </a>
+		            			<a href="{% url 'borrar' 'RegimenTenencia' elemento.id  %}"> <i class="material-icons">delete</i></a>
+		            		{% else %}
+		            			<a href="{% url 'activar' 'RegimenTenencia' elemento.id %}"><i class="material-icons">check</i> </a>
+		            		{% endif %}
 		            	</td>
 		          	</tr>
           		{% endfor %}

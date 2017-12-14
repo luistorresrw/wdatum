@@ -24,6 +24,8 @@ from .models import *
 from datetime import date,datetime
 import xlwt
 
+from django.apps import apps
+
 def exportar_xls(request):
     """Definicion que permite exportar los datos minimos de las encuestas
        en una hoja de calculo tipo excel."""
@@ -77,9 +79,9 @@ def exportar_xls(request):
 
         row.append(query_to_str(Cultivo.objects.filter(encuesta=encuesta),True))
 
-        row.append("Si" if encuesta.agroquimico.usa else "No")
-        row.append(encuesta.agroquimico.asesoramiento.descripcion)
-        row.append(encuesta.agroquimico.tripleLavado.descripcion)
+        row.append("Si" if encuesta.agroquimico and encuesta.agroquimico.usa else "No")
+        row.append(encuesta.agroquimico.asesoramiento.descripcion if encuesta.agroquimico else "")
+        row.append(encuesta.agroquimico.tripleLavado.descripcion if encuesta.agroquimico else "")
 
 
         row.append(query_to_str(AgroquimicoUsado.objects.filter(encuesta=encuesta).values_list('producto',flat=True),False))
@@ -304,20 +306,35 @@ def editar_usuario(request, id):
 
 
 @login_required
-def borrar_usuario(request, id):
-    usuario = get_object_or_404(Usuario, id=id)
-    usuario.is_active = False
-    usuario.save()
-    messages.success(request, 'El usuario se eliminó correctamente.')
-    return redirect('crear_usuario')
+def borrar(request,modelo, id):
+    objeto = get_object_or_404(apps.get_model(app_label='principal',model_name=modelo), id=id)
+    objeto.is_active = False
+    objeto.save()
+    messages.success(request, 'El registro se eliminó correctamente.')
+    retorno = 'crear_'+snake_caser(modelo)
+    return redirect(retorno)
 
 @login_required
-def activar_usuario(request, id):
-    usuario = get_object_or_404(Usuario, id=id)
+def activar(request,modelo, id):
+    usuario = get_object_or_404(apps.get_model(app_label='principal',model_name=modelo), id=id)
     usuario.is_active = True
     usuario.save()
-    messages.success(request, 'El usuario se activo correctamente.')
-    return redirect('crear_usuario')
+    messages.success(request, 'El registro se activo correctamente.')
+    retorno = 'crear_'+snake_caser(modelo)
+    return redirect(retorno)
+
+
+def snake_caser(string):
+    snake = ''
+    for index in range(len(string)):
+        if index == 0:
+            snake += string[index].lower()
+        elif string[index].isupper():
+            snake += '_'+string[index].lower()
+        else:
+            snake += string[index]
+    return snake
+
 
 # ---------------Nacionalidad---------------------#
 
@@ -368,13 +385,6 @@ def editar_nacionalidad(request, id):
     return render(request, './editar_nacionalidad.html', context)
 
 
-@login_required
-def borrar_nacionalidad(request, id):
-    nacionalidad = get_object_or_404(Nacionalidad, id=id)
-    nacionalidad.is_active = False
-    nacionalidad.save()
-    messages.success(request, 'La nacionalidad se eliminó correctamente.')
-    return redirect('crear_nacionalidad')
 
 
 # ------------Nivel de Instruccion-------------------
@@ -424,13 +434,7 @@ def editar_nivel_instruccion(request, id):
     return render(request, './editar_nivel_instruccion.html', context)
 
 
-@login_required
-def borrar_nivel_instruccion(request, id):
-    nivel_instruccion = get_object_or_404(NivelInstruccion, id=id)
-    nivel_instruccion.is_active = False
-    nivel_instruccion.save()
-    messages.success(request, 'El nivel de instrucción se eliminó correctamente.')
-    return redirect('crear_nivel_instruccion')
+
 
 
 # ------------Regimen de Tenencia-------------------
@@ -481,13 +485,6 @@ def editar_regimen_tenencia(request, id):
     return render(request,'./editar_regimen_tenencia.html', context)
 
 
-@login_required
-def borrar_regimen_tenencia(request, id):
-    regimen_tenencia = get_object_or_404(RegimenTenencia, id=id)
-    regimen_tenencia.is_active = False
-    regimen_tenencia.save()
-    messages.success(request, 'El regimen de tenencia se eliminó correctamente.')
-    return redirect('crear_regimen_tenencia')
 
 
 # ------------Año de construcción----------------------
@@ -537,13 +534,7 @@ def editar_anio_construccion(request, id):
     return render(request, './editar_anio_construccion.html', context)
 
 
-@login_required
-def borrar_anio_construccion(request, id):
-    anio_construccion = get_object_or_404(AnioConstruccion, id=id)
-    anio_construccion.is_active = False
-    anio_construccion.save()
-    messages.success(request, 'El año de construcción se eliminó correctamente.')
-    return redirect('crear_anio_construccion')
+
 
 
 # -----------Material Estructura-----------------------
@@ -591,13 +582,6 @@ def editar_material_estructura(request, id):
     return render(request, './editar_material_estructura.html', context)
 
 
-@login_required
-def borrar_material_estructura(request, id):
-    material_estructura = get_object_or_404(MaterialEstructura, id=id)
-    material_estructura.is_active=False
-    material_estructura.save()
-    messages.success(request, 'El material de estructura se eliminó correctamente')
-    return redirect('crear_material_estructura')
 
 
 # -----------Tipo de Producción -----------------------
@@ -646,12 +630,7 @@ def editar_tipo_produccion(request, id):
     return render(request, './editar_tipo_produccion.html', context)
 
 
-@login_required
-def borrar_tipo_produccion(request, id):
-    tipo_produccion = get_object_or_404(TipoProduccion, id=id)
-    tipo_produccion.is_active = False
-    messages.error(request, 'El tipo de producción se eliminó correctamente.')
-    return redirect('crear_tipo_produccion')
+
 
 
 # -----------Eleccion de Cultivo ------------------------
@@ -703,13 +682,7 @@ def editar_eleccion_cultivo(request, id):
     return render(request, './editar_eleccion_cultivo.html', context)
 
 
-@login_required
-def borrar_eleccion_cultivo(request, id):
-    eleccion_cultivo = get_object_or_404(EleccionCultivo, id=id)
-    eleccion_cultivo.is_active = False
-    eleccion_cultivo.save()
-    messages.success(request, 'La elección de cultivo se eliminó correctamente.')
-    return redirect('crear_eleccion_cultivo')
+
 
 
 # -----------Tipo de Cultivo ------------------------
@@ -759,13 +732,7 @@ def editar_tipo_cultivo(request, id):
     return render(request, './editar_tipo_cultivo.html', context)
 
 
-@login_required
-def borrar_tipo_cultivo(request, id):
-    tipo_cultivo = get_object_or_404(TipoCultivo, id=id)
-    tipo_cultivo.is_active = False
-    tipo_cultivo.save()
-    messages.success(request, 'El tipo de cultivo se eliminó correctamente')
-    return redirect('crear_tipo_cultivo')
+
 
 # ------------------Especie ----------------------------
 
@@ -815,13 +782,7 @@ def editar_especie(request, id):
     return render(request, './editar_especie.html', context)
 
 
-@login_required
-def borrar_especie(request, id):
-    especie = get_object_or_404(Especie, id=id)
-    especie.is_active = False
-    especie.save()
-    messages.success(request, 'La especie se eliminó correctamente.')
-    return redirect('crear_especie')
+
 
 
 # ----------------Factor Climático-----------------------
@@ -871,13 +832,7 @@ def editar_factor_climatico(request, id):
     return render(request, './editar_factor_climatico.html', context)
 
 
-@login_required
-def borrar_factor_climatico(request, id):
-    factor_climatico= get_object_or_404(FactorClimatico, id=id)
-    factor_climatico.is_active = False
-    factor_climatico.save()
-    messages.success(request, 'El factor climático se eliminó correctamente')
-    return redirect('crear_factor_climatico')
+
 
 
 # ----------------Triple Lavado-----------------------
@@ -926,13 +881,7 @@ def editar_triple_lavado(request, id):
     return render(request, './editar_triple_lavado.html', context)
 
 
-@login_required
-def borrar_triple_lavado(request, id):
-    triple_lavado= get_object_or_404(TripleLavado, id=id)
-    triple_lavado.is_active = False
-    triple_lavado.save()
-    messages.success(request, 'El triple lavado se eliminó correctamente.')
-    return redirect('crear_triple_lavado')
+
 
 
 # ----------------Asesoramiento-----------------------
@@ -983,13 +932,6 @@ def editar_asesoramiento(request, id):
     return render(request, './editar_asesoramiento.html', context)
 
 
-@login_required
-def borrar_asesoramiento(request, id):
-    asesoramiento = get_object_or_404(Asesoramiento, id=id)
-    asesoramiento.is_active = False
-    asesoramiento.save()
-    messages.success(request, 'El asesoramiento se eliminó correctamente')
-    return redirect('crear_asesoramiento')
 
 
 class UserViewSet(viewsets.ModelViewSet):

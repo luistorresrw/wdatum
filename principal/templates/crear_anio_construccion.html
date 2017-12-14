@@ -33,8 +33,16 @@
 		            	<td>{{elemento.id}}</td>
 		            	<td>{{elemento.descripcion}}</td>
 		            	<td>
-		            		<a href="{% url 'editar_anio_construccion' elemento.id %}"><i class="material-icons">edit</i> </a>
-		                	<a href="{% url 'borrar_anio_construccion' elemento.id %}"> <i class="material-icons">delete</i></a>
+
+		            		{% if elemento.is_active %}
+		            			<a href="{% url 'editar_anio_construccion' elemento.id %}"><i class="material-icons">edit</i> </a>
+		            			<a href="{% url 'borrar' 'AnioConstruccion' elemento.id  %}"> <i class="material-icons">delete</i></a>
+		            		{% else %}
+		            			<a href="{% url 'activar' 'AnioConstruccion' elemento.id %}"><i class="material-icons">check</i> </a>
+		            		{% endif %}
+
+			                	
+		            		
 		            	</td>
 		          	</tr>
           		{% endfor %}

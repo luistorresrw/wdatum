@@ -35,8 +35,12 @@
 		            	<td>{{elemento.id}}</td>
 		            	<td>{{elemento.descripcion}}</td>
 		            	<td>
-		            		<a class="disabled" href="" ><i class="material-icons">edit</i> 
-		                	<a href="{% url 'borrar_nivel_instruccion' elemento.id %}"> <i class="material-icons">delete</i></a>
+		            		{% if elemento.is_active %}
+		            			<a href="{% url 'editar_nivel_instruccion' elemento.id %}"><i class="material-icons">edit</i> </a>
+		            			<a href="{% url 'borrar' 'NivelInstruccion' elemento.id  %}"> <i class="material-icons">delete</i></a>
+		            		{% else %}
+		            			<a href="{% url 'activar' 'NivelInstruccion' elemento.id %}"><i class="material-icons">check</i> </a>
+		            		{% endif %}
 		            	</td>
 		          	</tr>
           		{% endfor %}

@@ -41,8 +41,13 @@
 		            		{% endif %}
 		            	</td>
 		            	<td>
-		            		<a href="{% url 'editar_tipo_cultivo' elemento.id %}"><i class="material-icons">edit</i> </a>
-		                	<a href="{% url 'borrar_tipo_cultivo' elemento.id %}"> <i class="material-icons">delete</i></a>
+
+		            		{% if elemento.is_active %}
+		            			<a href="{% url 'editar_tipo_cultivo' elemento.id %}"><i class="material-icons">edit</i> </a>
+		            			<a href="{% url 'borrar' 'TipoCultivo' elemento.id  %}"> <i class="material-icons">delete</i></a>
+		            		{% else %}
+		            			<a href="{% url 'activar' 'TipoCultivo' elemento.id %}"><i class="material-icons">check</i> </a>
+		            		{% endif %}
 		            	</td>
 		          	</tr>
           		{% endfor %}
