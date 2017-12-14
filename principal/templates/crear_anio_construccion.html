@@ -4,6 +4,17 @@
 
 <div class="container">
 	<div class="col s12">
+
+        {% if messages %}
+        <script>
+            {% for message in messages %}
+                $(document).ready(function(){
+                    Materialize.toast("{{ message }}", 4000);
+                  });
+            {% endfor %}
+        </script>
+        {%endif%}
+
 		<h3>Crear Año de Construcción</h3>
 			<div class="row">
 				<div class="col s12">
@@ -24,6 +35,7 @@
 	          	<tr>
 	              	<th>Id</th>
 	              	<th>Descrpción</th>
+                    <th>Es activo</th>
 	              	<th>Acciones</th>
 	          	</tr>
 	        </thead>
@@ -32,6 +44,13 @@
 		          	<tr>
 		            	<td>{{elemento.id}}</td>
 		            	<td>{{elemento.descripcion}}</td>
+                        <td>
+		            		{% if elemento.is_active %}
+		            		<i class="material-icons">check</i>
+		            		{% else %}
+		            		<i class="material-icons">clear</i>
+		            		{% endif %}
+		            	</td>
 		            	<td>
 		            		<a href="{% url 'editar_anio_construccion' elemento.id %}"><i class="material-icons">edit</i> </a>
 		                	<a href="{% url 'borrar_anio_construccion' elemento.id %}"> <i class="material-icons">delete</i></a>

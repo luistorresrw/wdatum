@@ -9,12 +9,13 @@
 
 	<div class="col s12">
 
-		{% if mensaje %}
+		{% if messages %}
 		<script>
-			$(document).ready(function(){
-				Materialize.toast("{{mensaje}}", 4000);
-			  });
-
+            {% for message in messages %}
+                $(document).ready(function(){
+                    Materialize.toast("{{ message }}", 4000);
+                  });
+            {% endfor %}
 		</script>
 		{%endif%}
 
