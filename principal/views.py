@@ -1045,6 +1045,7 @@ def sincro_establecimiento(request):
             return Response(establecimiento.data,status= status.HTTP_201_CREATED)
         return Response(establecimiento.errors,status= status.HTTP_400_BAD_REQUEST)
 
+
 class RegimenTenenciaViewSet(viewsets.ModelViewSet):
 
     queryset = RegimenTenencia.objects.all()

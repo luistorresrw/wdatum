@@ -21,8 +21,8 @@ urlpatterns = [
 
     url(r'^crear_usuario/$', views.crear_usuario, name='crear_usuario'),
     url(r'^(?P<id>\d+)/editar_usuario$', views.editar_usuario, name='editar_usuario'),
-    url(r'^borrar/(?P<modelo>\w+)/(?P<id>[0-9])/$',views.borrar,name='borrar'),
-    url(r'^activar/(?P<modelo>\w+)/(?P<id>[0-9])/$',views.activar,name='activar'),
+    url(r'^borrar/(?P<modelo>\w+)/(?P<id>\d+)/$',views.borrar,name='borrar'),
+    url(r'^activar/(?P<modelo>\w+)/(?P<id>\d+)/$',views.activar,name='activar'),
 
 
     url(r'^crear_nacionalidad/$', views.crear_nacionalidad, name='crear_nacionalidad'),

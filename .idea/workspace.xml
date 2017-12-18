@@ -2,23 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b81d6d59-1f1a-4a7e-8062-5fe76dca2fb7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/principal/templates/lista_encuestas.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0001_initial.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0002_auto_20171124_0235.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0003_auto_20171124_0250.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0004_auto_20171124_0254.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0005_auto_20171124_0300.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0006_updates.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0007_cultivo_especienueva.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0008_auto_20171207_1552.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0009_auto_20171211_1738.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/principal/migrations/0010_auto_20171213_0119.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/principal/static/styles.css" afterPath="$PROJECT_DIR$/principal/static/styles.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/principal/templates/base.html" afterPath="$PROJECT_DIR$/principal/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/principal/templates/crear_material_estructura.html" afterPath="$PROJECT_DIR$/principal/templates/crear_material_estructura.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/favicon.ico" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/principal/migrations/0011_auto_20171216_0343.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/principal/migrations/0012_auto_20171216_1723.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/principal/migrations/0013_auto_20171216_2337.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/principal/migrations/0014_auto_20171216_2339.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/principal/models.py" afterPath="$PROJECT_DIR$/principal/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/principal/urls.py" afterPath="$PROJECT_DIR$/principal/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/principal/views.py" afterPath="$PROJECT_DIR$/principal/views.py" />
     </list>
@@ -36,6 +25,7 @@
   <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
     <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="wdatum" />
   </component>
@@ -63,21 +53,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/principal/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.20376712">
+            <state vertical-scroll-proportion="-4.576923">
               <caret line="99" column="125" selection-start-line="99" selection-start-column="125" selection-end-line="99" selection-end-column="125" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/principal/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.185185">
-              <caret line="153" column="20" selection-start-line="153" selection-start-column="20" selection-end-line="153" selection-end-column="20" />
+            <state vertical-scroll-proportion="-5.298456">
+              <caret line="1046" column="0" selection-start-line="1046" selection-start-column="0" selection-end-line="1046" selection-end-column="0" />
               <folding>
                 <element signature="e#23#62#0" expanded="true" />
               </folding>
@@ -162,11 +152,11 @@
         <option value="$PROJECT_DIR$/principal/templates/editar_asesoramiento.html" />
         <option value="$PROJECT_DIR$/principal/templates/editar_anio_construccion.html" />
         <option value="$PROJECT_DIR$/principal/urls.py" />
-        <option value="$PROJECT_DIR$/principal/views.py" />
         <option value="$PROJECT_DIR$/principal/templates/crear_material_estructura.html" />
         <option value="$PROJECT_DIR$/principal/templates/lista_encuestas.html" />
         <option value="$PROJECT_DIR$/principal/static/styles.css" />
         <option value="$PROJECT_DIR$/principal/templates/base.html" />
+        <option value="$PROJECT_DIR$/principal/views.py" />
       </list>
     </option>
   </component>
@@ -352,7 +342,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.views">
+    <configuration default="false" name="views" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/principal" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="wdatum" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/principal/views.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -498,6 +505,14 @@
       <option name="useCustomRunCommand" value="false" />
       <option name="customRunCommand" value="" />
     </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Python.views" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Python.views" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="SvnConfiguration">
@@ -908,16 +923,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/principal/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.185185">
-          <caret line="153" column="20" selection-start-line="153" selection-start-column="20" selection-end-line="153" selection-end-column="20" />
-          <folding>
-            <element signature="e#23#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/principal/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="6.296296">
@@ -956,9 +961,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/principal/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20376712">
+        <state vertical-scroll-proportion="-4.576923">
           <caret line="99" column="125" selection-start-line="99" selection-start-column="125" selection-end-line="99" selection-end-column="125" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/principal/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.298456">
+          <caret line="1046" column="0" selection-start-line="1046" selection-start-column="0" selection-end-line="1046" selection-end-column="0" />
+          <folding>
+            <element signature="e#23#62#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
