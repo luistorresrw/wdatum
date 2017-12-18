@@ -15,8 +15,9 @@ urlpatterns = [
 
     url(r'^obtener_puntos/$', views.obtener_puntos, name='obtener_puntos'),
 
-    url(r'^principal/$', views.principal, name='principal'),
+    url(r'^lista_encuestas/$', views.lista_encuestas, name='lista_encuestas'),
 
+    url(r'^principal/$', views.principal, name='principal'),
 
     url(r'^crear_usuario/$', views.crear_usuario, name='crear_usuario'),
     url(r'^(?P<id>\d+)/editar_usuario$', views.editar_usuario, name='editar_usuario'),
