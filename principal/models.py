@@ -239,10 +239,10 @@ class Cultivo(models.Model):
 
 class AgroquimicoUsado(models.Model):
 	encuesta 			= models.ForeignKey('Encuesta')
-	producto 			= models.CharField(max_length=50)
-	plaga 				= models.CharField(max_length=50)
-	metodo_aplicacion 	= models.CharField(max_length=50)
-	frecuencia_uso 		= models.CharField(max_length=50)
+	producto 			= models.CharField(max_length=50,null=True,blank=True)
+	plaga 				= models.CharField(max_length=50,null=True,blank=True)
+	metodo_aplicacion 	= models.CharField(max_length=50,null=True,blank=True)
+	frecuencia_uso 		= models.CharField(max_length=50,null=True,blank=True)
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
