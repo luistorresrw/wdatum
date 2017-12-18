@@ -26,6 +26,7 @@
 	          	<tr>
 	              	<th>Id</th>
 	              	<th>Descripción</th>
+                    <th>Es activo</th>
 	              	<th>Acciones</th>
 	          	</tr>
 	        </thead>
@@ -34,6 +35,13 @@
 		          	<tr>
 		            	<td>{{elemento.id}}</td>
 		            	<td>{{elemento.descripcion}}</td>
+                        <td>
+				               	{% if elemento.is_active %}
+				               		<i class="material-icons">check</i>
+				               	{% else %}
+				               		<i class="material-icons">clear</i>
+				               	{% endif %}
+                        </td>
 		            	<td>
 		            		{% if elemento.is_active %}
 		            			<a href="{% url 'editar_asesoramiento' elemento.id %}"><i class="material-icons">edit</i> </a>

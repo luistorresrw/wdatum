@@ -75,35 +75,19 @@ WSGI_APPLICATION = 'wdatum.wsgi.application'
 
 DATABASES = {
 
-<<<<<<< HEAD
-      'default': {
-          'ENGINE': 'django.db.backends.mysql',
-          'NAME': 'mdatum',
-          'USER': 'root',
-          'PASSWORD': '123456',
-          'HOST': '',
-      }
-    #'default': {
-    #   'ENGINE': 'django.db.backends.sqlite3',
-    #   'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #}
-=======
-     # 'default': {
-     #     'ENGINE': 'django.db.backends.mysql',
-     #     'NAME': 'mdatum',
-     #     'USER': 'root',
-     #     'PASSWORD': '123456',
-     #     'HOST': '',
-     # }
+
+#      'default': {
+ #         'ENGINE': 'django.db.backends.mysql',
+   #       'NAME': 'mdatum',
+   #       'USER': 'root',
+   #       'PASSWORD': '123456',
+   #       'HOST': '',
+   #   }
     'default': {
-
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-
-
-
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
->>>>>>> 872b262610fed1578751abebe2b47b7c801ef991
+
 }
 
 # Password validation
