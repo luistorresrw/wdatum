@@ -1030,10 +1030,7 @@ def sincro_establecimiento(request):
         if establecimiento.is_valid():
             establecimiento.save(creado = date.today())
             return Response(establecimiento.data,status= status.HTTP_201_CREATED)
-        print establecimiento.errors
         return Response(establecimiento.errors,status= status.HTTP_400_BAD_REQUEST)
-#    queryset = Establecimiento.objects.all()
-#    serializer_class = EstablecimientoSerializer
 
 
 class RegimenTenenciaViewSet(viewsets.ModelViewSet):

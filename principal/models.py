@@ -18,7 +18,7 @@ class Usuario(User):
 	rol = models.CharField(max_length=15, choices=ROL_CHOICES)
 
 class Nacionalidad(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -27,7 +27,7 @@ class Nacionalidad(models.Model):
 		db_table = 'nacionalidad'
 
 class NivelInstruccion(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -36,7 +36,7 @@ class NivelInstruccion(models.Model):
 		db_table = 'nivel_instrucion'
 
 class RegimenTenencia(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -45,7 +45,7 @@ class RegimenTenencia(models.Model):
 		db_table = 'regimen_tenencia'
 
 class AnioConstruccion(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -54,7 +54,7 @@ class AnioConstruccion(models.Model):
 		db_table = 'anio_construccion'
 
 class MaterialEstructura(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -63,7 +63,7 @@ class MaterialEstructura(models.Model):
 		db_table = 'material_construccion'
 
 class TipoProduccion(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -72,7 +72,7 @@ class TipoProduccion(models.Model):
 		db_table = 'tipo_produccion'
 
 class EleccionCultivo(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active 	= models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -81,7 +81,7 @@ class EleccionCultivo(models.Model):
 		db_table = 'eleccion_cultivo'
 
 class TipoCultivo(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -90,7 +90,7 @@ class TipoCultivo(models.Model):
 		db_table = 'tipo_cultivo'
 
 class Especie(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -99,7 +99,7 @@ class Especie(models.Model):
 		db_table = 'especie'
 
 class FactorClimatico(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -108,7 +108,7 @@ class FactorClimatico(models.Model):
 		db_table = 'factor_climatico'
 
 class TripleLavado(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -117,7 +117,7 @@ class TripleLavado(models.Model):
 		db_table = 'triple_lavado'
 
 class Asesoramiento(models.Model):
-	descripcion = models.CharField(max_length=50)
+	descripcion = models.CharField(max_length=50,unique=True)
 	is_active = models.BooleanField(default=True)
 	def __str__(self):
 		return self.descripcion
@@ -136,7 +136,7 @@ class Establecimiento(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
-	transaccion 		= models.CharField(max_length=50,default=None)
+	
 
 
 	def __str__(self):
@@ -156,7 +156,7 @@ class Encuestado(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
-	transaccion 		= models.CharField(max_length=50,default=None)
+	
 
 	class Meta:
 		db_table = 'encuestado'
@@ -169,7 +169,6 @@ class Familia(models.Model):
 	creado		= models.DateField(default=None,null=True,blank=True)
 	modificado	= models.DateField(default=None,null=True,blank=True)
 	eliminado 	= models.DateField(default=None,null=True,blank=True)
-	transaccion = models.CharField(max_length=50,default=None)
 
 	class Meta:
 		db_table = 'familia'
@@ -183,7 +182,7 @@ class Agroquimico(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
-	transaccion 		= models.CharField(max_length=50,default=None)
+	
 
 	class Meta:
 		db_table = 'agroquimico'
@@ -199,8 +198,7 @@ class Encuesta(models.Model):
 	creado 			= models.DateField(default=None,null=True,blank=True)
 	modificado 		= models.DateField(default=None,null=True,blank=True)
 	eliminado 		= models.DateField(default=None,null=True,blank=True)
-	transaccion 	= models.CharField(max_length=50,default=None)
-
+	
 	class Meta:
 		db_table = 'encuesta'
 
@@ -209,11 +207,11 @@ class Invernaculo(models.Model):
 	cantidadModulos 	= models.IntegerField()
 	superficieUnitaria 	= models.IntegerField()
 	materialEstructura 	= models.ForeignKey('MaterialEstructura')
-	anioContruccion	 	= models.ForeignKey('AnioConstruccion')
+	anioConstruccion 	= models.ForeignKey('AnioConstruccion')
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
-	transaccion 		= models.CharField(max_length=50,default=None)
+	
 
 	class Meta:
 		db_table = 'invernaculo'
@@ -227,14 +225,14 @@ class Cultivo(models.Model):
 	surcos 				= models.IntegerField()
 	distancias 			= models.IntegerField()
 	largo 				= models.IntegerField()
-	tipoProducion 		= models.ForeignKey('TipoProduccion')
+	tipoProduccion 		= models.ForeignKey('TipoProduccion')
 	eleccionCultivo 	= models.ForeignKey('EleccionCultivo')
 	eleccionEspecificar	= models.CharField(max_length=50,blank=True,null=True,default="")
 	especieNueva		= models.CharField(max_length=50,default="",blank=True,null=True)
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
-	transaccion 		= models.CharField(max_length=50,default=None)
+	
 
 	class Meta:
 		db_table = 'cultivo'
@@ -248,7 +246,7 @@ class AgroquimicoUsado(models.Model):
 	creado				= models.DateField(default=None,null=True,blank=True)
 	modificado 			= models.DateField(default=None,null=True,blank=True)
 	eliminado 			= models.DateField(default=None,null=True,blank=True)
-	transaccion 		= models.CharField(max_length=50,default=None)
+	
 
 	class Meta:
 		db_table = 'agroquimico_usado'
