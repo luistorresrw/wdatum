@@ -5,6 +5,8 @@
 <div class="container">
 	<div class="col s12">
 		<h3>Lista de establecimientos encuestados</h3>
+
+		 
 		{% if lista %}
     	<div class="tabla">
 		<table class="highlight bordered responsive-table">
@@ -36,8 +38,10 @@
 
 		<a class="btn waves-effect light-green" style="align:right;" href="{% url 'exportar_xls' %}">Exportar encuestas<i class="material-icons right">description</i></a>
 
-			{% else %}
-			<h1></h1>
+		{% else %}
+			<div class="collapsible-header">
+				<i class="medium material-icons">error</i> No se encontraron datos. 
+			</div>
       	{% endif %}
     </div>
 </div>
