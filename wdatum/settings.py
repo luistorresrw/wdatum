@@ -76,17 +76,17 @@ WSGI_APPLICATION = 'wdatum.wsgi.application'
 DATABASES = {
 
 
-#      'default': {
- #         'ENGINE': 'django.db.backends.mysql',
-   #       'NAME': 'mdatum',
-   #       'USER': 'root',
-   #       'PASSWORD': '123456',
-   #       'HOST': '',
-   #   }
-    'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+      'default': {
+          'ENGINE': 'django.db.backends.mysql',
+          'NAME': 'mdatum',
+          'USER': 'root',
+          'PASSWORD': '123456',
+          'HOST': '',
+      }
+    #'default': {
+    #   'ENGINE': 'django.db.backends.sqlite3',
+    #   'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #}
 
 }
 
@@ -128,7 +128,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_URL = '/media/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR,'fotos')
 
 
 #GEOPOSITION_GOOGLE_MAPS_API_KEY =  'AIzaSyDkKy8gqIij-B-wdd3tFe2kLIA1zRlCtQo'
