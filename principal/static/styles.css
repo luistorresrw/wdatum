@@ -34,3 +34,8 @@ align:center;
 
 
 }
+
+.tabla{
+    height:400px;
+    overflow:auto;
+}

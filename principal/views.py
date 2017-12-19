@@ -146,6 +146,19 @@ def logout(request):
     return redirect(reverse('login'))  # redirecciona a login
 
 
+
+
+
+@login_required
+def lista_encuestas(request):
+    lista = Encuesta.objects.all()
+    context = {'lista':lista}
+    return render(request, 'lista_encuestas.html', context )
+
+
+
+
+
 @login_required
 def cambiar_password(request):
     form = CambiarPasswordForm()
@@ -1126,7 +1139,6 @@ def sincro_encuesta(request):
 
             encuesta.save(creado = date.today())
             return Response(encuesta.data, status = status.HTTP_201_CREATED)
-        print encuesta.errors
         return Response(encuesta.errors,status = status.HTTP_400_BAD_REQUEST)
 
 
