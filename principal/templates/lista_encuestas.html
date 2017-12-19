@@ -12,7 +12,7 @@
 		<table class="highlight bordered responsive-table">
 	        <thead>
 	          	<tr>
-
+	          		<th>Imagen</th>
 	              	<th>Encuesta N°</th>
                     <th>Fecha</th>
 					<th>Establecimiento</th>
@@ -23,6 +23,7 @@
 	        <tbody>
      			{% for elemento in lista %}
 		          	<tr>
+		          		<td><img src="{{elemento.establecimiento.foto}}" width="70" ></td>
 		            	<td>{{elemento.id}}</td>
 		            	<td>{{elemento.fecha}}</td>
 		            	<td>{{elemento.establecimiento.nombre}}</td>
