@@ -9,7 +9,7 @@ function initMap() {
 	$.get(url,function(data){
 		for(var i = 0; i < data.length; i ++){
 			pos = new google.maps.LatLng(data[i]["fields"]["posLatitud"],data[i]["fields"]["posLongitud"]);
-			contentString = '<b>'+data[i]["fields"]["nombre"]+'</b><br><i>'+data[i]["fields"]["posLatitud"]+', '+data[i]["fields"]["posLongitud"]+'</i>';
+			contentString = '<IMG BORDER="0" src="'+data[i]["fields"]["foto"]+'" ><br><b>'+data[i]["fields"]["nombre"]+'</b><br><i>'+data[i]["fields"]["posLatitud"]+', '+data[i]["fields"]["posLongitud"]+'</i>';
 			infowindow = new google.maps.InfoWindow({
 		    content: contentString
 		});
