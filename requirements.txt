@@ -4,7 +4,7 @@ chardet==3.0.4
 coreapi==2.3.3
 coreschema==0.0.4
 daemon==1.1
-Django==1.11.7
+Django==1.11.29
 django-allauth==0.34.0
 django-geoposition==0.3.0
 django-material==1.1.1
